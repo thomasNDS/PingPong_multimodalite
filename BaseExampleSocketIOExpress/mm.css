@@ -1,0 +1,31 @@
+svg.logger {
+	border : solid black 1px;
+	height : 200px;
+	width: 100%;
+}
+
+svg.logger > polyline {
+	fill		 : none;
+	stroke-width : 1;
+}
+
+svg.logger > polyline.A {stroke: red;}
+svg.logger > polyline.B {stroke: green;}
+svg.logger > polyline.C {stroke: blue;}
+
+#commands {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	background: white;
+	border: solid black 1px;
+	opacity: 0.5;
+}
+
+#commands > button		{background: red; font-size: 30px;}
+#commands > button.active {background: green;}
+
+#commands > div > p {font-size: 24px; margin: 2px; padding: 0px; display: inline; border: solid black 1px;}
+#commands > div.acceleration > p.acceleration {background: green;}
+#commands > div.accelerationIncludingGravity > p.accelerationIncludingGravity {background: green;}
+#commands > div.rotationRate > p.rotationRate {background: green;}
