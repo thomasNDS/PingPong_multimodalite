@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="pingpong.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+
+    </head>
+    <body onload="init()">
+        <h1>Ping Pong !</h1>
+        <button id="terrain" value="terrain">terrain</button>
+        <button id="joueur1" value="joueur1">joueur1</button>
+        <button id="joueur2" value="joueur2">joueur2</button>
+        <div id="loggers">
+        </div>
+        <button id="ping" value="ping">Ping all observer</button>
+
+        <div id="control">
+            <button id="CmdObserve" value="Visualiser">Visualiser</button>
+            <button id="CmdLog" value="Enregistrer">Connexion</button>
+        </div>
+        <div id="commands"> </div>
+        <div id="info"> </div>
+        <div id="orientation"> </div>
+        
+    </body>
+</html>
