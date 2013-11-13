@@ -65,7 +65,7 @@ var MMServer = {
     }
 };
 
-var port = process.argv[2] || 8080;
+var port = process.argv[2] || 4242;
 console.log("Listening on port " + port);
 MMServer.init(port);
 

@@ -62,9 +62,10 @@ function init() {
     $('#joueur2').on('click', function() {
         console.log("click j2")
     });
-    $('#CmdLog').on('click', function() {
-        document.getElementById('CmdLog').classList.toggle('active');
-    });
+    bt_log = document.getElementById('CmdLog');
+    bt_log.addEventListener('click', function() {
+        ToggleLogger();
+    }, false);
     document.getElementById('CmdObserve').addEventListener('click', function() {
         ToggleObserver();
     }, false);
@@ -79,7 +80,7 @@ function init() {
         $('#joueur2').hide();
         $('#CmdLog').hide();
     }
-}
+    }
 
 //_________________________________________________________________________________________________________
 function deviceMotionHandler(e) {
@@ -151,4 +152,7 @@ function ToggleObserver() {
     socket.emit('mode', {mode: mode});
 }
 
-
+//_________________________________________________________________________________________________________
+function ToggleLogger() {
+    document.getElementById('CmdLog').classList.toggle('active');
+}
