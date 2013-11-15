@@ -7,8 +7,30 @@
         <script src="/socket.io/socket.io.js"></script>
 
     </head>
-    <body onload="init()">
-        <h1>Ping Pong !</h1>
+    <!--        <body onload="init()">
+                <h1>Ping Pong !</h1>
+                <button id="terrain" value="terrain">terrain</button>
+                <button id="joueur1" value="joueur1">joueur1</button>
+                <button id="joueur2" value="joueur2">joueur2</button>
+                <div id="loggers">
+                </div>
+                <button id="ping" value="ping">Ping all observer</button>
+        
+                <div id="control">
+                    <button id="CmdObserve" value="Visualiser">Visualiser</button>
+                    <button id="CmdLog" value="Enregistrer">Connexion</button>
+                </div>
+                <div id="commands"> </div>
+                <div id="info"> </div>
+                <div id="orientation"> </div>
+        
+            </body>-->
+
+    <body>
+        <h1>
+            e-Pong
+        </h1>
+
         <button id="terrain" value="terrain">terrain</button>
         <button id="joueur1" value="joueur1">joueur1</button>
         <button id="joueur2" value="joueur2">joueur2</button>
@@ -23,6 +45,20 @@
         <div id="commands"> </div>
         <div id="info"> </div>
         <div id="orientation"> </div>
+
+        <svg xmlns="http://www.w3.org/2000/svg" id="field" width="90%" height="80%">
+        <!-- Create the board. -->
+        <rect x="1" y="1" width="100%" height="100%" fill="green" id="bpard" />
+        <!-- Create the ball. -->
+        <circle cx="150" cy="150" r="15" fill="white" id="ball" />
+        <!-- Create the paddle. -->
+        <!--<rect x="1" y="1" width="150" height="10" fill="navy" id="paddle" />-->
+        </svg>
+        <script src="fieldManager.js"></script>
         
+        <script>
+            init();
+            drawGameSVG();
+        </script>
     </body>
 </html>
