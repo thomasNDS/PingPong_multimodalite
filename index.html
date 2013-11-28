@@ -1,28 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="pingpong.js"></script>
+        <script src="js/pingpong.js"></script>
         <script src="/socket.io/socket.io.js"></script>
-
+        <script src="js/popoUpJquery.js"></script>
     </head>
-    <body onload="init()">
-        <h1>Ping Pong !</h1>
-        <button id="terrain" value="terrain">terrain</button>
-        <button id="joueur1" value="joueur1">joueur1</button>
-        <button id="joueur2" value="joueur2">joueur2</button>
-        <div id="loggers">
-        </div>
-        <button id="ping" value="ping">Ping all observer</button>
 
-        <div id="control">
-            <button id="CmdObserve" value="Visualiser">Visualiser</button>
-            <button id="CmdLog" value="Enregistrer">Connexion</button>
+    <body onload="init()" style="text-align: center;">
+
+        <div >
+            <h1>Ping Pong !</h1>
+            <div id="ChooseMode" >
+                <button  id="terrain" value="terrain">Terrain</button>
+                <button id="joueur1" value="joueur1">Equipe 1</button>
+                <button id="joueur2" value="joueur2">Equipe 2</button>
+            </div>
+
+            <button id="pause" value="Pause">Pause</button>
+
+            <div id="pause_menu" style="text-align: center" class="pause_menu_open">
+                <div id="options">
+                    <h1>Pause</h1>
+                    <button id="gaucher" value="Gaucher">Gaucher</button>
+                    <button id="droitier" value="Droitier" class="active">Droitier</button>
+                </div>
+                <button id="return"  value="return" class="pause_menu_close">Retour au jeu</button>
+            </div>
         </div>
         <div id="commands"> </div>
+        <div id="team"> </div>
         <div id="info"> </div>
-        <div id="orientation"> </div>
-        
+
+        <script>
+            $(function() {
+                $('#pause_menu').popup({
+                    'autoopen': false,
+                    onopen: function() {
+                        pauses(true);
+                    },
+                    onclose: function() {
+                        pauses(false);
+                    }
+                });
+
+            });
+        </script>
+
     </body>
 </html>

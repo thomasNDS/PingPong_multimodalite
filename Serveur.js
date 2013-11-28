@@ -1,3 +1,4 @@
+var pause = false;
 var Server = {
     fs: require('fs'),
     express: require('express'), // Appel au framework express
@@ -5,6 +6,8 @@ var Server = {
     app: null,
     platforms: {},
     observers: {},
+    teamOne: {},
+    teamTwo: {},
     /**
      * Constructeur du serveur
      * 
@@ -16,19 +19,22 @@ var Server = {
                 .listen(port);
         this.io = this.io.listen(this.app, {log: false});
         this.io.on('connection', function(socket) {
+
             socket.on('mode', function(data) {
                 Server.defineMode(socket, data);
             });
-            socket.on('hello', function() {
-                console.log("hello");
-                console.log(Server.observers);
+            socket.on('pause', function() {
+                console.log("pause " + pause);
+                pause = !pause;
                 for (var i in Server.observers) {
-                    Server.observers[i].socket.emit('hello', {mode: 'mode'});
-                    console.log('send');
+                    Server.observers[i].socket.emit('pause', {mode: pause});
                 }
             });
             socket.on('update', function(data) {
                 Server.update(socket, data);
+            });
+            socket.on('ping', function(data) {
+                Server.ping(socket, data);
             });
             socket.on('disconnect', function() {
                 Server.disconnect(socket);
@@ -43,7 +49,7 @@ var Server = {
      */
     disconnect: function(socket) {
         console.log('disconnect');
-        if (this.platforms[socket.id]) {        //Check des plateforme
+        if (this.platforms[socket.id]) {        //Check des plateformes
             delete this.platforms[socket.id];
         }
         if (this.observers[socket.id]) {        //check des observateurs
@@ -52,8 +58,7 @@ var Server = {
         for (var i in this.observers) {         //notification à tous
             this.observers[i].socket.emit('disappear', {id: socket.id});
         }
-    }
-    ,
+    },
     connection: function(socket) {
         console.log('connection');
         var ptf = {socket: socket};
@@ -67,6 +72,18 @@ var Server = {
      */
     defineMode: function(socket, data) {
         switch (data.mode) {
+            case 'team2':
+                console.log('Team2');
+                var obs = {socket: socket};
+                this.teamTwo[socket.id] = obs;
+                this.observers[socket.id] = obs;
+                break;
+            case 'team1':
+                console.log('Team1');
+                var obs = {socket: socket};
+                this.teamOne[socket.id] = obs;
+                this.observers[socket.id] = obs;
+                break;
             case 'observer':
                 console.log('connection observer');
                 var obs = {socket: socket};
@@ -89,10 +106,17 @@ var Server = {
         for (var i in this.observers) {
             this.observers[i].socket.emit('update', {id: socket.id, data: data});
         }
+    },
+    ping: function(socket, data) {
+        // Send it back to all observers
+        //If in zone
+        for (var i in this.observers) {
+            this.observers[i].socket.emit('playerPing', {id: socket.id, data: data});
+        }
     }
 };
 
 var port = process.argv[2] || 4242;
-console.log("Listening on port " + port + '\n http://http://localhost:4242/');
+console.log("Listening on port " + port + '\n http://localhost:4242/');
 Server.init(port);
 
