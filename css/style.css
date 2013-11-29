@@ -1,0 +1,55 @@
+button.active {
+    background: blue;
+}
+
+button {
+    -moz-box-shadow: 0px 8px 14px -7px #3e7327;
+    -webkit-box-shadow: 0px 8px 14px -7px #3e7327;
+    box-shadow: 0px 8px 14px -7px #3e7327;
+
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #77b55a), color-stop(1, #72b352));
+    background:-moz-linear-gradient(top, #77b55a 5%, #72b352 100%);
+    background:-webkit-linear-gradient(top, #77b55a 5%, #72b352 100%);
+    background:-o-linear-gradient(top, #77b55a 5%, #72b352 100%);
+    background:-ms-linear-gradient(top, #77b55a 5%, #72b352 100%);
+    background:linear-gradient(to bottom, #77b55a 5%, #72b352 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#77b55a', endColorstr='#72b352',GradientType=0);
+
+    background-color:#77b55a;
+
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border-radius:4px;
+
+    border:1px solid #4b8f29;
+    display:inline-block;
+    color:#ffffff;
+    font-family:arial;
+    font-size:18px;
+    font-weight:bold;
+    padding:8px 17px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #5b8a3c;
+
+}
+button:active {
+    background-color: lightgreen;
+    position:relative;
+    top:1px;
+}
+button:hover {
+    background-color: darkgreen;    
+}
+/* Add these styles once per website */
+  .popup_background {
+    z-index: 2000; /* any number */
+  }
+  .popup_wrapper {
+    z-index: 2001; /* any number + 1 */
+  }
+  /* Add inline-block support for IE7 */
+  .popup_align,
+  .popup_content {
+    *display: inline;
+    *zoom: 1;
+  }
