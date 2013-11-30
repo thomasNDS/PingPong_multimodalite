@@ -42,9 +42,18 @@ function init() {
             delete observations[data.id];
         }
     });
+    $('#startGame').hide();
+    socket.on('beginGame', function() {
+        console.log('start beginGame');
+        $('#waitingPlayers').hide();
+        $('#startGame').show();
+        $('#titleEpong').hide();
+    });
+
+
     socket.on('playerPing', function(data) {
         $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode);
-        hitTheBall(data.data.power,data.data.type);
+        hitTheBall(data.data.power, data.data.type);
     });
 
     socket.on('pause', function(data) {
@@ -122,6 +131,15 @@ function init() {
         $('#joueur2').hide();
         $('#register').hide();
     }
+
+    $('#goGame').attr("disabled", "disabled");
+
+}
+function endGame() {
+    $('#goGame').attr("disabled", "disabled");
+    $('#waitingPlayers').show();
+    $('#startGame').hide();
+    $('#titleEpong').show();
 }
 
 function pauses(state) {

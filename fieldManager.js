@@ -153,7 +153,7 @@ function calculNextY() {
         posXinZoneHit = ((ballX + ballRayon) - beginXZone) / largeurAcceptableHit;
     }
 
-    console.log(posXinZoneHit);
+//    console.log(posXinZoneHit);
     var coef = 0;
     if (checkHandToHit() === "right") {
         //Coup droit
@@ -168,7 +168,7 @@ function calculNextY() {
         coef = coef * getDirectionBall();
     }
 
-    console.log("coef = " + coef);
+//    console.log("coef = " + coef);
     return coef;
 }
 

@@ -10,20 +10,27 @@
     </head>
 
     <body style="text-align: center;">
-        
+
         <div style="position: fixed;  position: fixed;
              padding:10px;
              z-index:200;
              margin: 5% auto;
              left: 0;
              right: 0;">
-
-            <h1>Ping Pong !</h1>
+            
+            
+            <h1 id="titleEpong">epong !</h1>
 
             <div id="ChooseMode" >
                 <button  id="terrain" value="terrain" onclick="beginGame()">Terrain</button>
                 <button id="joueur1" value="joueur1">Equipe 1</button>
-                <button id="joueur2" value="joueur2">Equipe 2</button>
+                <button id="joueur2" value="joueur2">Equipe 2</button><br>
+                <div id="waitingPlayers">
+                    <h2>En Attente de joueurs ... </h2>
+                </div>
+                <div id="startGame">
+                    <button id="goGame" value="go">Lancer Le jeu</button>
+                </div>
             </div>
 
             <button id="pause" value="Pause">Pause</button>
@@ -63,18 +70,18 @@
         <script src="fieldManager.js"></script>
 
         <script>
-            $(function() {
-                $('#pause_menu').popup({
-                    'autoopen': false,
-                    onopen: function() {
-                        pauses(true);
-                    },
-                    onclose: function() {
-                        pauses(false);
-                    }
-                });
+                    $(function() {
+                        $('#pause_menu').popup({
+                            'autoopen': false,
+                            onopen: function() {
+                                pauses(true);
+                            },
+                            onclose: function() {
+                                pauses(false);
+                            }
+                        });
 
-            });
+                    });
         </script>
 
         <script>

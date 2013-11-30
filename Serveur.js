@@ -89,12 +89,14 @@ var Server = {
                 var obs = {socket: socket};
                 this.teamTwo[socket.id] = obs;
                 this.observers[socket.id] = obs;
+                this.updateState(2)
                 break;
             case 'team1':
                 console.log('Team1');
                 var obs = {socket: socket};
                 this.teamOne[socket.id] = obs;
                 this.observers[socket.id] = obs;
+                this.updateState(1);
                 break;
             case 'observer':
                 console.log('connection observer');
