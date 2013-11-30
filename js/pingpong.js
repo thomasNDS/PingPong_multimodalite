@@ -53,7 +53,12 @@ function init() {
 
     socket.on('playerPing', function(data) {
         $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode);
-        hitTheBall(data.data.power, data.data.type);
+        
+        if (data.data.mode === "team1") {
+            hitTheBall(data.data.power, data.data.type, 1);
+        } else if (data.data.mode === "team2") {
+            hitTheBall(data.data.power, data.data.type, 0);
+        }
     });
 
     socket.on('pause', function(data) {

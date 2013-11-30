@@ -14,7 +14,7 @@ var ballDX = fieldWidth / 150; // Change in ball x position.
 var ballDY = fieldHeight / 150; // Change in ball y position.
 var ballDYBase = ballDY;
 var ballFirstPosX = 0;
-var ballFirstPosY = 10;
+var ballFirstPosY = 20;
 var ballX = ballFirstPosX; // Ball x position.
 var ballY = ballFirstPosY; // Ball y position.
 //var paddleX = 150; // Initial paddle location.
@@ -65,8 +65,8 @@ function drawBall() {
 
     // If ball hits the top, bounce it. 
     if (ballY + ballDY < ballRayon || ballY + ballDY > fieldHeight - ballRayon) {
-//        ballDY = -ballDY;
-        endGame();
+        ballDY = -ballDY;
+//        endGame();
     }
 }
 
@@ -113,15 +113,16 @@ function unpauseGame(){
 }
 
 function hitTestDroit() {
-    hitTheBall(1, "simpleDroit");
+    hitTheBall(1, "simpleDroit", playerPlaying);
 }
 
 function hitTestGauche() {
-    hitTheBall(1, "simpleRevert");
+    hitTheBall(1, "simpleRevert", playerPlaying);
 }
 
-function hitTheBall(puissance, type) {
-    if (isHitable) {
+function hitTheBall(puissance, type, teamToPlay) {
+    if (isHitable && playerPlaying === teamToPlay) {
+        console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
         ballDX = -ballDX;
         ballDY = ballDYBase * calculNextY();
         coefPuissance = 1;
