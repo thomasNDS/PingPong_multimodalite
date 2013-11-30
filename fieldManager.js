@@ -1,20 +1,30 @@
 // Global variables
+
+//Terrain
 var field = document.getElementById('field');
 var fieldStyle = window.getComputedStyle(field);
 var fieldHeight = parseInt(fieldStyle.height);
 var fieldWidth = parseInt(fieldStyle.width);
-var ballX = 150; // Ball x position.
-var ballY = 150; // Ball y position.
+var largeurAcceptableHit = 250;
+
+//Balle
+var ballRayon = 15;
+var ballColor = "white";
 var ballDX = fieldWidth / 150; // Change in ball x position.
 var ballDY = fieldHeight / 150; // Change in ball y position.
 var ballDYBase = ballDY;
+var ballFirstPosX = 0;
+var ballFirstPosY = 10;
+var ballX = ballFirstPosX; // Ball x position.
+var ballY = ballFirstPosY; // Ball y position.
 //var paddleX = 150; // Initial paddle location.
 //var paddleH = 10; // Paddle height.
 //var paddleD = fieldHeight - paddleH; // Paddle depth.
 //var paddleW = 150; // Paddle width.
+
+//Jeu
 var isHitable = false;
 var isRuning = false;
-var largeurAcceptableHit = 150;
 var coefPuissance = 1;
 var gameLoop = null;
 var playerPlaying = 1; // 0 joueur gauche 1 droite
@@ -25,11 +35,11 @@ function drawGameSVG() {
     window.addEventListener('keydown', whatKey, true);
     window.addEventListener('resize', updateField, true);
     updateField();
+    writeBall();
 }
 
 /*
  * Dessine la balle
- * Le '15' fait référence à la taille de la balle dans le html
  */
 function drawBall() {
 
@@ -37,7 +47,7 @@ function drawBall() {
         return;
     }
 
-// Change the ball location.
+    // Change the ball location.
     ballX += ballDX * coefPuissance;
     ballY += ballDY * coefPuissance;
     ball.setAttribute("cx", ballX);
@@ -45,7 +55,7 @@ function drawBall() {
     if (ballX + ballDX > fieldWidth - largeurAcceptableHit || ballX + ballDX < largeurAcceptableHit) {
         isHitable = true;
         console.log("TAPE!!");
-        if (ballX + ballDX > fieldWidth + 15 || ballX + ballDX < -15) {
+        if (ballX + ballDX > fieldWidth + ballRayon || ballX + ballDX < -ballRayon) {
             endGame();
         }
     }
@@ -54,8 +64,10 @@ function drawBall() {
     }
 
     // If ball hits the top, bounce it. 
-    if (ballY + ballDY < 15 || ballY + ballDY > fieldHeight - 15)
-        ballDY = -ballDY;
+    if (ballY + ballDY < ballRayon || ballY + ballDY > fieldHeight - ballRayon) {
+//        ballDY = -ballDY;
+        endGame();
+    }
 }
 
 function beginGame() {
@@ -74,7 +86,7 @@ function endGame() {
     gameLoop = null;
 
     var reset = confirm("Recommencer?");
-    if (reset){
+    if (reset) {
         resetGame();
         beginGame();
     }
@@ -82,14 +94,22 @@ function endGame() {
 }
 
 function resetGame() {
-    ballX = 150;
-    ballY = 150;
+    ballX = ballFirstPosX;
+    ballY = ballFirstPosY;
     ball.setAttribute("cx", ballX);
     ball.setAttribute("cy", ballY);
     ballDX = fieldWidth / 150;
     ballDY = fieldHeight / 150;
     coefPuissance = 1;
     playerPlaying = 1;
+}
+
+function pauseGame(){
+    isRuning = false;
+}
+
+function unpauseGame(){
+    isRuning = true;
 }
 
 function hitTestDroit() {
@@ -104,7 +124,7 @@ function hitTheBall(puissance, type) {
     if (isHitable) {
         ballDX = -ballDX;
         ballDY = ballDYBase * calculNextY();
-        coefPuissance = puissance;
+        coefPuissance = 1;
         playerPlaying = (playerPlaying + 1) % 2;
         switch (type) {
             case 'simpleDroit':
@@ -119,7 +139,6 @@ function hitTheBall(puissance, type) {
 
 /*
  * Renvoie une valeus correspondant au coefficient à appliquer au Y de la balle après un coup
- * 15 pour la largeur de balle encore une fois
  * @returns {Number|largeurAcceptableHit|ballX|fieldWidth}
  */
 function calculNextY() {
@@ -127,11 +146,11 @@ function calculNextY() {
     //Calcul de l'endroit ou la frappe a eu lieu en fonction de si c'est a gauche ou a droite
     //A gauche
     if (playerPlaying === 0) {
-        posXinZoneHit = (largeurAcceptableHit - (ballX + 15)) / largeurAcceptableHit;
+        posXinZoneHit = (largeurAcceptableHit - (ballX + ballRayon)) / largeurAcceptableHit;
     } else {
         // A droite
         var beginXZone = fieldWidth - largeurAcceptableHit;
-        posXinZoneHit = ((ballX + 15) - beginXZone) / largeurAcceptableHit;
+        posXinZoneHit = ((ballX + ballRayon) - beginXZone) / largeurAcceptableHit;
     }
 
     console.log(posXinZoneHit);
@@ -226,6 +245,16 @@ function writeRightHitableZone() {
     document.getElementById("rightHitableZone").setAttribute("width", largeurAcceptableHit);
     document.getElementById("rightHitableZone").setAttribute("height", "100%");
     document.getElementById("rightHitableZone").setAttribute("fill", "grey");
+}
+
+/*
+ * Fonction pour donner les infos de la ball
+ */
+function writeBall() {
+    document.getElementById("ball").setAttribute("cx", ballX);
+    document.getElementById("ball").setAttribute("cy", ballY);
+    document.getElementById("ball").setAttribute("r", ballRayon);
+    document.getElementById("ball").setAttribute("fill", ballColor);
 }
 
 function updateField() {

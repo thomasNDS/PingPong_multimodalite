@@ -44,6 +44,7 @@ function init() {
     });
     socket.on('playerPing', function(data) {
         $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode);
+        hitTheBall(data.data.power,data.data.type);
     });
 
     socket.on('pause', function(data) {
@@ -51,10 +52,12 @@ function init() {
             console.log("pause on");
             pause = true;
             $('.pause_menu_open').click();
+            pauseGame();
         } else {
             pause = false;
             console.log("pause off");
             $('.pause_menu_close').click();
+            unpauseGame();
         }
     });
 
