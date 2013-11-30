@@ -1,4 +1,6 @@
 var pause = false;
+var start = false;
+var teamArrive = 0;
 var Server = {
     fs: require('fs'),
     express: require('express'), // Appel au framework express
@@ -38,6 +40,16 @@ var Server = {
             });
             socket.on('disconnect', function() {
                 Server.disconnect(socket);
+            });
+            socket.on('start', function() {
+                for (var i in Server.observers) {
+                    Server.observers[i].socket.emit('start', {});
+                }
+            });
+            socket.on('end', function() {
+                for (var i in Server.observers) {
+                    Server.observers[i].socket.emit('start', {});
+                }
             });
         });
     },
@@ -105,6 +117,17 @@ var Server = {
         // Send it back to all observers
         for (var i in this.observers) {
             this.observers[i].socket.emit('update', {id: socket.id, data: data});
+        }
+    },
+    updateState: function(team) {
+        if (teamArrive === 0) {
+            teamArrive = team;
+        }
+        else if (teamArrive !== team) {
+            start = true;
+            for (var i in this.observers) {
+                this.observers[i].socket.emit('beginGame', {});
+            }
         }
     },
     ping: function(socket, data) {
