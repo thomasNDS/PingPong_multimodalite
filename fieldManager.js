@@ -57,7 +57,8 @@ function drawBall() {
     ballY += ballDY * coefPuissance;
     ball.setAttribute("cx", ballX);
     ball.setAttribute("cy", ballY);
-    if (ballX + ballDX > fieldWidth - largeurAcceptableHit || ballX + ballDX < largeurAcceptableHit) {
+    var largAccep = (document.getElementById("field").offsetWidth * largeurAcceptableHit) / 100;
+    if (ballX + ballDX > fieldWidth - largAccep || ballX + ballDX < largAccep) {
         isHitable = true;
         console.log("TAPE!!");
         if (ballX + ballDX > fieldWidth + ballRayon) {
@@ -157,13 +158,13 @@ function hitTestGauche() {
 
 function hitTheBall(puissance, type, teamToPlay) {
     if (waitService) {
-        service (teamToPlay);
+        service(teamToPlay);
     } else {
-        if (isHitable && playerPlaying === teamToPlay) {
+        if (isHitable && (playerPlaying === teamToPlay) && isItToMyTeamToPlay(teamToPlay)) {
             console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
             ballDX = -ballDX;
             ballDY = ballDYBase * calculNextY();
-            coefPuissance = 1;
+            coefPuissance = 0.85 + puissance / 100;
             playerPlaying = (playerPlaying + 1) % 2;
             switch (type) {
                 case 'simpleDroit':
@@ -183,14 +184,15 @@ function hitTheBall(puissance, type, teamToPlay) {
  */
 function calculNextY() {
     var posXinZoneHit;
+    var largAccep = (document.getElementById("field").offsetWidth * largeurAcceptableHit) / 100;
     //Calcul de l'endroit ou la frappe a eu lieu en fonction de si c'est a gauche ou a droite
     //A gauche
     if (playerPlaying === 0) {
-        posXinZoneHit = (largeurAcceptableHit - (ballX + ballRayon)) / largeurAcceptableHit;
+        posXinZoneHit = (largAccep - (ballX + ballRayon)) / largAccep;
     } else {
         // A droite
-        var beginXZone = fieldWidth - largeurAcceptableHit;
-        posXinZoneHit = ((ballX + ballRayon) - beginXZone) / largeurAcceptableHit;
+        var beginXZone = fieldWidth - largAccep;
+        posXinZoneHit = ((ballX + ballRayon) - beginXZone) / largAccep;
     }
 
 //    console.log(posXinZoneHit);
@@ -209,6 +211,23 @@ function calculNextY() {
         coef = coef * getDirectionBall();
     }
     return coef;
+}
+
+/*
+ * 
+ * @param {type} team
+ * @returns {undefined}
+ */
+function isItToMyTeamToPlay(team) {
+    var fieldWidth = document.getElementById("field").offsetWidth;
+    if (team === 1 && (ballX > (fieldWidth / 2))) {
+        //Equipe de droite
+        return true;
+    } else if (team === 0 && (ballX < (fieldWidth / 2))) {
+        //Equipe de gauche
+        return true;
+    }
+    return false;
 }
 
 /*
