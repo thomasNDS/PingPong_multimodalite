@@ -1,5 +1,5 @@
-var pause = false;
-var start = false;
+var pause = false;  //state pause
+var start = false;  // if game start
 var teamArrive = 0;
 var Server = {
     fs: require('fs'),
@@ -121,6 +121,11 @@ var Server = {
             this.observers[i].socket.emit('update', {id: socket.id, data: data});
         }
     },
+    /**
+     * update the state
+     * 
+     * @param {type} team
+     */
     updateState: function(team) {
         if (teamArrive === 0) {
             teamArrive = team;
@@ -132,6 +137,12 @@ var Server = {
             }
         }
     },
+    /**
+     * a player hit the ball
+     * 
+     * @param {type} socket
+     * @param {type} data
+     */
     ping: function(socket, data) {
         // Send it back to all observers
         //If in zone

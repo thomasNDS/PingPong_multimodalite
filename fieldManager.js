@@ -15,10 +15,6 @@ var ballDY = 0; // Change in ball y position.
 var ballDYBase = ballDY;
 var ballX = 0; // Ball x position.
 var ballY = 0; // Ball y position.
-//var paddleX = 150; // Initial paddle location.
-//var paddleH = 10; // Paddle height.
-//var paddleD = fieldHeight - paddleH; // Paddle depth.
-//var paddleW = 150; // Paddle width.
 
 //Jeu
 var isHitable = false;
@@ -33,6 +29,10 @@ var pointForGame = 5;
 var waitService = false;
 var teamWhoHaveService = 0;
 
+/**
+ * draw SVG zone
+ * @returns {undefined}
+ */
 function drawGameSVG() {
     // Add keyboard listener.
     window.addEventListener('keydown', whatKey, true);
@@ -41,7 +41,7 @@ function drawGameSVG() {
     writeBall();
 }
 
-/*
+/**
  * Dessine la balle
  */
 function drawBall() {
@@ -68,16 +68,19 @@ function drawBall() {
     else {
         isHitable = false;
     }
-
     // If ball hits the top, bounce it. 
     if (ballY + ballDY < ballRayon || ballY + ballDY > fieldHeight - ballRayon) {
         ballDY = -ballDY;
 //        endGame();
     }
 }
-
+/**
+ * Start the game
+ * @returns {undefined}
+ */
 function beginGame() {
     $('#pause').show();
+    $('#startGame').hide();
     $('#titleEpong').hide();
     $('#ChooseMode').hide();
     isRuning = true;
@@ -85,7 +88,11 @@ function beginGame() {
     waitService = true;
     $('#infoDetails').html('<h1> Service équipe ' + ((teamWhoHaveService + 1)) + ' </h1>');
 }
-
+/**
+ * Serve for the game
+ * @param {type} team
+ * @returns {undefined}
+ */
 function service(team) {
     console.log("team " + team + " who have service=" + teamWhoHaveService);
     if (team === teamWhoHaveService) {
@@ -105,19 +112,21 @@ function service(team) {
         }
     }
 }
-
+/**
+ * End the game
+ * @param {type} team
+ * @returns {undefined}
+ */
 function endGame(team) {
     waitService = true;
     window.clearInterval(gameLoop);
     gameLoop = null;
-
     // Si victoire avec 2 point d'ecart
     if (Math.abs(team1point - team2point) > 2 && ((team1point > pointForGame) || (team2point > pointForGame))) {
         $('#pause').hide();
         isRuning = false;
-//        window.clearInterval(gameLoop);
-//        gameLoop = null;
         $('#titleEpong').show();
+        $('#startGame').show();
         // On réinitialise les scores
         team1point = 0;
         team2point = 0;
@@ -134,8 +143,11 @@ function endGame(team) {
     $('#scoreTeam2').html(team2point);
 }
 
+/**
+ * reset info for a new game
+ * @returns {undefined}
+ */
 function resetGame() {
-
     ball.setAttribute("cx", ballX);
     ball.setAttribute("cy", ballY);
     coefPuissance = 1;
@@ -156,13 +168,19 @@ function resetGame() {
         ballDY = -fieldHeight / 150;
         playerPlaying = 0;
     }
-    console.log("========================service=" + teamWhoHaveService + "=====================")
 }
 
+/**
+ * pause the game
+ * @returns {undefined}
+ */
 function pauseGame() {
     isRuning = false;
 }
-
+/**
+ * unpause the game
+ * @returns {undefined}
+ */
 function unpauseGame() {
     isRuning = true;
 }
@@ -175,8 +193,16 @@ function hitTestGauche() {
     hitTheBall(15, "simpleRevert", playerPlaying);
 }
 
+/**
+ * A player hit the ball
+ * 
+ * @param {type} puissance
+ * @param {type} type
+ * @param {type} teamToPlay
+ * @returns {undefined}
+ */
 function hitTheBall(puissance, type, teamToPlay) {
-    console.log("hit" + teamToPlay)
+    console.log("hit" + teamToPlay);
     if (waitService) {
         service(teamToPlay);
     } else {
@@ -198,7 +224,7 @@ function hitTheBall(puissance, type, teamToPlay) {
     }
 }
 
-/*
+/**
  * Renvoie une valeus correspondant au coefficient à appliquer au Y de la balle après un coup
  * @returns {Number|largeurAcceptableHit|ballX|fieldWidth}
  */
@@ -215,7 +241,6 @@ function calculNextY() {
         posXinZoneHit = ((ballX + ballRayon) - beginXZone) / largAccep;
     }
 
-//    console.log(posXinZoneHit);
     var coef = 0;
     //Selon le coup réalisé, calcul différent
     if (checkHandToHit() === "right") {
@@ -233,8 +258,7 @@ function calculNextY() {
     return coef;
 }
 
-/*
- * 
+/**
  * @param {type} team
  * @returns {undefined}
  */
@@ -266,6 +290,11 @@ function getDirectionBall() {
     return direction;
 }
 
+/**
+ * check the hand of the player 
+ * @param {type} mainHand
+ * @returns {String}
+ */
 function checkHandToHit(mainHand) {
     var hand = null;
     if (ballX < fieldWidth / 2) {
@@ -284,7 +313,10 @@ function checkHandToHit(mainHand) {
     return hand;
 }
 
-// Get key press.
+/**
+ * get what key is press
+ * @param {type} evt
+ */
 function whatKey(evt) {
     switch (evt.keyCode) {
         // Left arrow.
@@ -302,7 +334,7 @@ function whatKey(evt) {
     }
 }
 
-/*
+/**
  * Fonction pour donner les informations sur la zone gauhe à partir de laquelle on peut taper
  */
 function writeLeftHitableZone() {
@@ -313,7 +345,7 @@ function writeLeftHitableZone() {
     document.getElementById("leftHitableZone").setAttribute("fill", "grey");
 }
 
-/*
+/**
  *  Fonction pour donner les informations sur la zone droite à partir de laquelle on peut taper
  */
 function writeRightHitableZone() {
@@ -326,7 +358,7 @@ function writeRightHitableZone() {
     document.getElementById("rightHitableZone").setAttribute("fill", "grey");
 }
 
-/*
+/**
  * Fonction pour donner les infos de la ball
  */
 function writeBall() {
@@ -336,6 +368,10 @@ function writeBall() {
     document.getElementById("ball").setAttribute("fill", ballColor);
 }
 
+/**
+ * On resize
+ * @returns {undefined}
+ */
 function updateField() {
     console.log("resize");
     writeLeftHitableZone();
