@@ -30,17 +30,20 @@ function init() {
     socket.on('beginGame', function() {
         console.log('start beginGame');
         $('#waitingPlayers').hide();
-        $('#startGame').show();
+        if (mode === 'observer')
+            $('#startGame').show();
+        else
+            $('#startGame').hide();
         $('#titleEpong').hide();
     });
 
     socket.on('playerPing', function(data) {
-        $("#info").html($("#info").html() + "<br>Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode);
+        $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode + "<br>" + $("#info").html());
 
         if (data.data.mode === "team1") {
-            hitTheBall(data.data.power, data.data.type, 1);
-        } else if (data.data.mode === "team2") {
             hitTheBall(data.data.power, data.data.type, 0);
+        } else if (data.data.mode === "team2") {
+            hitTheBall(data.data.power, data.data.type, 1);
         }
     });
 
@@ -73,6 +76,8 @@ function init() {
         $('#options').hide();
         subscribe2Server();
         mode = 'observer';
+        $('#fieldZone').show();
+        $('#pause').hide();
     });
 
     $('#gaucher').on('click', function() {
@@ -94,11 +99,13 @@ function init() {
         $('#terrain').removeClass('active');
         $('#options').show();
         subscribe2Server();
-       // pauses(true);
+        $('#fieldZone').hide();
+        $('#pause').show();
+        // pauses(true);
     });
     $('#goGame').on('click', function() {
         beginGame();
-        console.log("go le jeu go !")
+        console.log("go le jeu go !");
     });
     $('#joueur2').on('click', function() {
         console.log("click j2");
@@ -109,7 +116,9 @@ function init() {
         $('#terrain').removeClass('active');
         $('#options').show();
         subscribe2Server();
-      //  pauses(true);
+        $('#fieldZone').hide();
+        //  pauses(true);
+        $('#pause').show();
 
     });
 
@@ -126,6 +135,7 @@ function init() {
         $('#register').hide();
     }
     $('#pause').hide();
+    $('#fieldZone').hide();
 }
 
 function pauses(state) {
@@ -138,8 +148,9 @@ function pauses(state) {
  * @returns {undefined}
  */
 function ping(puissance, typeOfHit) {
-    if (mode != 'observer')
+    if (mode != 'observer') {
         socket.emit('ping', {power: puissance, type: typeOfHit, mode: mode});
+    }
 }
 
 /**
@@ -148,9 +159,6 @@ function ping(puissance, typeOfHit) {
  */
 function deviceMotionHandler(e) {
     if (connected == true) {
-//        socket.emit('update', {acceleration: e.acceleration,
-//            accelerationIncludingGravity: e.accelerationIncludingGravity,
-//            rotationRate: e.rotationRate});
         var actualDate = new Date();
         var diffSinceLastAction = actualDate.getTime() - dateLastAction.getTime();
         if (e.accelerationIncludingGravity.z > 15 && diffSinceLastAction > 1000) {

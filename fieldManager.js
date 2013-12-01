@@ -10,13 +10,11 @@ var largeurAcceptableHit = 250;
 //Balle
 var ballRayon = 15;
 var ballColor = "white";
-var ballDX = fieldWidth / 150; // Change in ball x position.
-var ballDY = fieldHeight / 150; // Change in ball y position.
+var ballDX = 0; // Change in ball x position.
+var ballDY = 0; // Change in ball y position.
 var ballDYBase = ballDY;
-var ballFirstPosX = 0;
-var ballFirstPosY = 20;
-var ballX = ballFirstPosX; // Ball x position.
-var ballY = ballFirstPosY; // Ball y position.
+var ballX = 0; // Ball x position.
+var ballY = 0; // Ball y position.
 //var paddleX = 150; // Initial paddle location.
 //var paddleH = 10; // Paddle height.
 //var paddleD = fieldHeight - paddleH; // Paddle depth.
@@ -27,7 +25,7 @@ var isHitable = false;
 var isRuning = false;
 var coefPuissance = 1;
 var gameLoop = null;
-var playerPlaying = 1; // 0 joueur gauche 1 droite
+var playerPlaying; // 0 joueur gauche 1 droite
 var lastPlayerPlaying;
 var team1point = 0;
 var team2point = 0;
@@ -85,9 +83,11 @@ function beginGame() {
     isRuning = true;
     resetGame();
     waitService = true;
+    $('#infoDetails').html('<h1> Service équipe ' + ((teamWhoHaveService + 1)) + ' </h1>');
 }
 
 function service(team) {
+    console.log("team " + team + " who have service=" + teamWhoHaveService);
     if (team === teamWhoHaveService) {
         if (gameLoop) { //si y'a déjà un setInterval en cours, on le supprime avant de le recréér
             clearInterval(gameLoop);
@@ -96,6 +96,7 @@ function service(team) {
         gameLoop = setInterval(drawBall, 16);
         //On attend plus de service suivant
         waitService = false;
+        $('#infoDetails').html('');
         //on change l'équpe qui a le service
         if (teamWhoHaveService === 0)
             teamWhoHaveService = 1;
@@ -106,13 +107,16 @@ function service(team) {
 }
 
 function endGame(team) {
-    resetGame();
+    waitService = true;
+    window.clearInterval(gameLoop);
+    gameLoop = null;
+
     // Si victoire avec 2 point d'ecart
     if (Math.abs(team1point - team2point) > 2 && ((team1point > pointForGame) || (team2point > pointForGame))) {
         $('#pause').hide();
         isRuning = false;
-        window.clearInterval(gameLoop);
-        gameLoop = null;
+//        window.clearInterval(gameLoop);
+//        gameLoop = null;
         $('#titleEpong').show();
         // On réinitialise les scores
         team1point = 0;
@@ -124,19 +128,35 @@ function endGame(team) {
             team2point++;
         }
     }
+    resetGame();
+    $('#infoDetails').html('<h1> Service équipe ' + ((teamWhoHaveService + 1)) + ' </h1>');
     $('#scoreTeam1').html(team1point);
     $('#scoreTeam2').html(team2point);
 }
 
 function resetGame() {
-    ballX = ballFirstPosX;
-    ballY = ballFirstPosY;
+     
     ball.setAttribute("cx", ballX);
     ball.setAttribute("cy", ballY);
-    ballDX = fieldWidth / 150;
-    ballDY = fieldHeight / 150;
     coefPuissance = 1;
-    playerPlaying = 1;
+
+    //On fixe la balle du bon coté du terrain
+    if (teamWhoHaveService === 0) {
+        console.log("team1 a le service");
+        ballX = 0;
+        ballY = fieldHeight / 2 - 5;
+        ballDX = fieldWidth / 150;
+        ballDY = fieldHeight / 150;
+        playerPlaying = 0;
+    } else {
+        console.log("team2 a le service");
+        ballX = fieldWidth;
+        ballY = fieldHeight / 2 - 5;
+        ballDX = -fieldWidth / 150;
+        ballDY = -fieldHeight / 150;
+        playerPlaying = 1;
+    }
+    console.log("========================service=" + teamWhoHaveService + "=====================")
 }
 
 function pauseGame() {
@@ -156,8 +176,9 @@ function hitTestGauche() {
 }
 
 function hitTheBall(puissance, type, teamToPlay) {
+    console.log("hit" + teamToPlay)
     if (waitService) {
-        service (teamToPlay);
+        service(teamToPlay);
     } else {
         if (isHitable && playerPlaying === teamToPlay) {
             console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
