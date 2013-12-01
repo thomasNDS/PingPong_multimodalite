@@ -104,28 +104,28 @@ function resetGame() {
     playerPlaying = 1;
 }
 
-function pauseGame(){
+function pauseGame() {
     isRuning = false;
 }
 
-function unpauseGame(){
+function unpauseGame() {
     isRuning = true;
 }
 
 function hitTestDroit() {
-    hitTheBall(1, "simpleDroit", playerPlaying);
+    hitTheBall(15, "simpleDroit", playerPlaying);
 }
 
 function hitTestGauche() {
-    hitTheBall(1, "simpleRevert", playerPlaying);
+    hitTheBall(15, "simpleRevert", playerPlaying);
 }
 
 function hitTheBall(puissance, type, teamToPlay) {
-    if (isHitable && playerPlaying === teamToPlay) {
-        console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
+    if (isHitable & (playerPlaying === teamToPlay)) {
+        console.log("joueur qui doit jouer : " + playerPlaying + " type de coup : " + type + " team recu : " + teamToPlay);
         ballDX = -ballDX;
         ballDY = ballDYBase * calculNextY();
-        coefPuissance = 1;
+        coefPuissance = 0.85 + (puissance / 100);
         playerPlaying = (playerPlaying + 1) % 2;
         switch (type) {
             case 'simpleDroit':
@@ -156,6 +156,7 @@ function calculNextY() {
 
     console.log(posXinZoneHit);
     var coef = 0;
+    //Selon le coup réalisé, calcul différent
     if (checkHandToHit() === "right") {
         //Coup droit
         coef = 1 - 2 * posXinZoneHit;
@@ -165,7 +166,7 @@ function calculNextY() {
     }
 
     if (playerPlaying === 0) {
-        //On multiplie par la direction de la balle pour avoir le bon sens.
+        //Cas batard du gars a gauche de la table .. On multiplie par la direction de la balle pour avoir le bon sens.
         coef = coef * getDirectionBall();
     }
 
