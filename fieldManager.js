@@ -96,6 +96,7 @@ function beginGame() {
 function service(team) {
     console.log("team " + team + " who have service=" + teamWhoHaveService);
     if (team === teamWhoHaveService) {
+        document.getElementById("paf").play();
         if (gameLoop) { //si y'a déjà un setInterval en cours, on le supprime avant de le recréér
             clearInterval(gameLoop);
             gameLoop = null;
@@ -130,6 +131,7 @@ function endGame(team) {
         // On réinitialise les scores
         team1point = 0;
         team2point = 0;
+        document.getElementById("tada").play();
     } else {
         if (team === 1) {
             team1point++;
@@ -159,6 +161,7 @@ function resetGame() {
         ballY = fieldHeight / 2 - 5;
         ballDX = fieldWidth / 150;
         ballDY = fieldHeight / 150;
+        ballDYBase = ballDY;
         playerPlaying = 1;
     } else {
         console.log("team2 a le service");
@@ -166,6 +169,7 @@ function resetGame() {
         ballY = fieldHeight / 2 - 5;
         ballDX = -fieldWidth / 150;
         ballDY = -fieldHeight / 150;
+        ballDYBase = ballDY;
         playerPlaying = 0;
     }
 }
@@ -212,6 +216,7 @@ function hitTheBall(puissance, type, teamToPlay) {
             ballDY = ballDYBase * calculNextY();
             coefPuissance = 0.85 + puissance / 100;
             playerPlaying = (playerPlaying + 1) % 2;
+            document.getElementById("paf").play();
             switch (type) {
                 case 'simpleDroit':
                     break;
