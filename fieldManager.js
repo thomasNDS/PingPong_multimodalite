@@ -5,7 +5,7 @@ var field = document.getElementById('field');
 var fieldStyle = window.getComputedStyle(field);
 var fieldHeight = parseInt(fieldStyle.height);
 var fieldWidth = parseInt(fieldStyle.width);
-var largeurAcceptableHit = 250;
+var largeurAcceptableHit = 25; //0; En pourcentage
 
 //Balle
 var ballRayon = 15;
@@ -55,7 +55,8 @@ function drawBall() {
     ballY += ballDY * coefPuissance;
     ball.setAttribute("cx", ballX);
     ball.setAttribute("cy", ballY);
-    if (ballX + ballDX > fieldWidth - largeurAcceptableHit || ballX + ballDX < largeurAcceptableHit) {
+    var largAccep = (document.getElementById("field").offsetWidth * largeurAcceptableHit) / 100;
+    if (ballX + ballDX > fieldWidth - largAccep || ballX + ballDX < largAccep) {
         isHitable = true;
         console.log("TAPE!!");
         if (ballX + ballDX > fieldWidth + ballRayon) {
@@ -168,11 +169,11 @@ function unpauseGame() {
 }
 
 function hitTestDroit() {
-    hitTheBall(1, "simpleDroit", playerPlaying);
+    hitTheBall(15, "simpleDroit", playerPlaying);
 }
 
 function hitTestGauche() {
-    hitTheBall(1, "simpleRevert", playerPlaying);
+    hitTheBall(15, "simpleRevert", playerPlaying);
 }
 
 function hitTheBall(puissance, type, teamToPlay) {
@@ -180,11 +181,11 @@ function hitTheBall(puissance, type, teamToPlay) {
     if (waitService) {
         service(teamToPlay);
     } else {
-        if (isHitable && playerPlaying === teamToPlay) {
+        if (isHitable && (playerPlaying === teamToPlay) && isItToMyTeamToPlay(teamToPlay)) {
             console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
             ballDX = -ballDX;
             ballDY = ballDYBase * calculNextY();
-            coefPuissance = 1;
+            coefPuissance = 0.85 + puissance / 100;
             playerPlaying = (playerPlaying + 1) % 2;
             switch (type) {
                 case 'simpleDroit':
@@ -204,18 +205,20 @@ function hitTheBall(puissance, type, teamToPlay) {
  */
 function calculNextY() {
     var posXinZoneHit;
+    var largAccep = (document.getElementById("field").offsetWidth * largeurAcceptableHit) / 100;
     //Calcul de l'endroit ou la frappe a eu lieu en fonction de si c'est a gauche ou a droite
     //A gauche
     if (playerPlaying === 0) {
-        posXinZoneHit = (largeurAcceptableHit - (ballX + ballRayon)) / largeurAcceptableHit;
+        posXinZoneHit = (largAccep - (ballX + ballRayon)) / largAccep;
     } else {
         // A droite
-        var beginXZone = fieldWidth - largeurAcceptableHit;
-        posXinZoneHit = ((ballX + ballRayon) - beginXZone) / largeurAcceptableHit;
+        var beginXZone = fieldWidth - largAccep;
+        posXinZoneHit = ((ballX + ballRayon) - beginXZone) / largAccep;
     }
 
 //    console.log(posXinZoneHit);
     var coef = 0;
+    //Selon le coup réalisé, calcul différent
     if (checkHandToHit() === "right") {
         //Coup droit
         coef = 1 - 2 * posXinZoneHit;
@@ -225,10 +228,27 @@ function calculNextY() {
     }
 
     if (playerPlaying === 0) {
-        //On multiplie par la direction de la balle pour avoir le bon sens.
+        //Cas batard du gars a gauche de la table .. On multiplie par la direction de la balle pour avoir le bon sens.
         coef = coef * getDirectionBall();
     }
     return coef;
+}
+
+/*
+ * 
+ * @param {type} team
+ * @returns {undefined}
+ */
+function isItToMyTeamToPlay(team) {
+    var fieldWidth = document.getElementById("field").offsetWidth;
+    if (team === 1 && (ballX > (fieldWidth / 2))) {
+        //Equipe de droite
+        return true;
+    } else if (team === 0 && (ballX < (fieldWidth / 2))) {
+        //Equipe de gauche
+        return true;
+    }
+    return false;
 }
 
 /*
@@ -289,7 +309,7 @@ function whatKey(evt) {
 function writeLeftHitableZone() {
     document.getElementById("leftHitableZone").setAttribute("x", "1");
     document.getElementById("leftHitableZone").setAttribute("y", "1");
-    document.getElementById("leftHitableZone").setAttribute("width", largeurAcceptableHit);
+    document.getElementById("leftHitableZone").setAttribute("width", largeurAcceptableHit + "%");
     document.getElementById("leftHitableZone").setAttribute("height", "100%");
     document.getElementById("leftHitableZone").setAttribute("fill", "grey");
 }
@@ -298,10 +318,11 @@ function writeLeftHitableZone() {
  *  Fonction pour donner les informations sur la zone droite à partir de laquelle on peut taper
  */
 function writeRightHitableZone() {
-    var xZone = document.getElementById("field").offsetWidth - largeurAcceptableHit;
+    var largAccep = (document.getElementById("field").offsetWidth * largeurAcceptableHit) / 100;
+    var xZone = document.getElementById("field").offsetWidth - largAccep;
     document.getElementById("rightHitableZone").setAttribute("x", xZone);
     document.getElementById("rightHitableZone").setAttribute("y", "1");
-    document.getElementById("rightHitableZone").setAttribute("width", largeurAcceptableHit);
+    document.getElementById("rightHitableZone").setAttribute("width", largeurAcceptableHit + "%");
     document.getElementById("rightHitableZone").setAttribute("height", "100%");
     document.getElementById("rightHitableZone").setAttribute("fill", "grey");
 }
