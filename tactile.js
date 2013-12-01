@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+var position = "";
 
 if (!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
     Hammer.plugins.showTouches();
@@ -29,6 +30,22 @@ var hammertime2 = Hammer(document.getElementById('zoomwrapper2'), {
     drag_min_distance: 0
 });
 
+var hammertime3 = Hammer(document.getElementById('zoomwrapper3'), {
+    transform_always_block: true,
+    transform_min_scale: 1,
+    drag_block_horizontal: true,
+    drag_block_vertical: true,
+    drag_min_distance: 0
+});
+
+var hammertime4 = Hammer(document.getElementById('zoomwrapper4'), {
+    transform_always_block: true,
+    transform_min_scale: 1,
+    drag_block_horizontal: true,
+    drag_block_vertical: true,
+    drag_min_distance: 0
+});
+
 var posX = 0, posY = 0,
         lastPosX = 0, lastPosY = 0,
         bufferX = 0, bufferY = 0,
@@ -39,51 +56,48 @@ hammertime.on('touch drag dragend transform', function(ev) {
     elemRect = document.getElementById('zoom1');
     orientation = true;
     manageMultitouch(ev);
-    
-    console.log(orientation);
+    position = "hautgauche";
 });
 
 hammertime2.on('touch drag dragend transform', function(ev) {
     elemRect = document.getElementById('zoom2');
     orientation = false;
     manageMultitouch(ev);
-    
-    console.log(orientation);
+    position = "basdroite";
+});
+
+hammertime3.on('touch drag dragend transform', function(ev) {
+    elemRect = document.getElementById('zoom3');
+    orientation = true;
+    manageMultitouch(ev);
+    position = "basgauche";
+});
+
+hammertime4.on('touch drag dragend transform', function(ev) {
+    elemRect = document.getElementById('zoom4');
+    orientation = false;
+    manageMultitouch(ev);
+    position = "hautdroite";
 });
 
 
 function manageMultitouch(ev) {
 
     switch (ev.type) {
-        case 'touch':
-            last_scale = scale;
-            last_rotation = rotation;
-
-            break;
-
         case 'drag':
-            posX = ev.gesture.deltaX;
-            posY = ev.gesture.deltaY;
-            if(ev.gesture.deltaX > 0){
-                pouic(Math.abs(posX),Math.abs(posY),Math.abs(lastPosX),Math.abs(lastPosY),"svg");
-                console.log(posX);
-            }
-            else{
-               
-                pouic(lastPosX-document.body.offsetWidth,lastPosY+document.body.offsetHeight,posX-document.body.offsetWidth,posY+document.body.offsetHeight,"svg2");
-                console.log(posX);
-            }
+            var touches = ev.gesture.touches;
+            
+            posX = touches[0].pageX;
+            posY = touches[0].pageY;
+            if(lastPosX!==0 && lastPosY!==0)
+                pouic(posX,posY,lastPosX,lastPosY);
 
-//            
-//            if(orientation===0)
-//                pouic(Math.abs(lastPosX),Math.abs(lastPosY),Math.abs(posX),Math.abs(posY));
-//            else
-//                pouic(Math.abs(lastPosX),Math.abs(lastPosY),Math.abs(posX),Math.abs(posY));
             lastPosX = posX;
             lastPosY = posY;
             break;
 
         case 'dragend':
+            console.log(position);
             posX = 0;
             posY = 0;
             lastPosX = 0;
@@ -95,8 +109,7 @@ function manageMultitouch(ev) {
             break;
     }
 
-    var transform =
-            "translate3d(" + posX + "px," + posY + "px, 0) ";
+    var transform = "translate3d(" + posX + "px," + posY + "px, 0) ";
 
     elemRect.style.transform = transform;
     elemRect.style.oTransform = transform;
@@ -106,9 +119,9 @@ function manageMultitouch(ev) {
 
 }
 
-function pouic(x1,y1,x2,y2,svg)
+function pouic(x1,y1,x2,y2)
 {
-    var svg = document.getElementById(svg);
+    var svg = document.getElementById("svg");
 
     var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'line'); //Create a path in SVG's namespace
     

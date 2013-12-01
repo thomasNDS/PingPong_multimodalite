@@ -18,17 +18,25 @@ and open the template in the editor.
 
             .drag {
                 position: absolute;
-                width: 100px;
-                height: 100px;
+                height: 50%;
+                width: 50%;
             }
 
-            .drag1 { 
-                background-image: url("raquette1.png");
+            .drag1 {
+                left:  0;
+                top:  0;
             }
-            .drag2 { 
-                background: #4986e7; 
+            .drag2 {
                 right: 0;
                 bottom: 0;
+            }
+            .drag3 {
+                left:  0;
+                bottom: 0;
+            }
+            .drag4 {
+                right:   0;
+                top:  0;
             }
 
         </style>
@@ -36,7 +44,6 @@ and open the template in the editor.
 
     <body>
 
-        <h1>Drag the balls!</h1>
 
         <!--        <div class="drag drag1"></div>
                 <div class="drag drag2"></div>-->
@@ -48,38 +55,31 @@ and open the template in the editor.
                     <!--<img src="raquette1.png" alt="" width="200" height="200" style="position : absolute; z-index: 1;" />-->
                 </div>
             </div>
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg" >
-            </svg>
         </div>
         <div id="zoomwrapper2">
             <div id="zoom2" class="drag drag2" >
-                <div id="rect1" class="polaroid">
+                <div id="rect2" class="polaroid">
                     <!--<img src="raquette1.png" alt="" width="200" height="200" style="position : absolute; z-index: 1;" />-->
                 </div>
             </div>
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg2" style="right: 0; bottom: 0">
-            </svg>
+        </div>
+        <div id="zoomwrapper3">
+            <div id="zoom3" class="drag drag3" >
+                <div id="rect3" class="polaroid">
+                    <!--<img src="raquette1.png" alt="" width="200" height="200" style="position : absolute; z-index: 1;" />-->
+                </div>
+            </div>
+        </div>
+        <div id="zoomwrapper4">
+            <div id="zoom4" class="drag drag4" >
+                <div id="rect4" class="polaroid">
+                    <!--<img src="raquette1.png" alt="" width="200" height="200" style="position : absolute; z-index: 1;" />-->
+                </div>
+            </div>
         </div>
 
-        <!--    <head>
-                <title>TODO supply a title</title>
-                <meta charset="UTF-8">
-                <meta name=”viewport” content=”width=device-width, initial-scale=1.0, user-scalable=no”>
-                <script src=”jquery-1.7.2.min.js”></script>
-                <script src=”hammer.js”></script>
-                <script src=”jquery.hammer.js”></script>
-                <script src=”myLogic.js”></script>
-                <link href=’http://fonts.googleapis.com/css?family=Bree+Serif’ rel=’stylesheet’ type=’text/css’>
-                <link href=’style.css’ rel=’stylesheet’ type=’text/css’>
-            </head>
-            <body>
-                <div id="zoomwrapper1">
-                    <div id="zoom1" class="zoomProps" >
-                        <div id="rect1" class="polaroid">
-                            <img src="raquette1.png" alt="" width="200" height="200" style="position : absolute; z-index: 1;" />
-                        </div>
-                    </div>
-                </div>-->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg" >
+        </svg>
 
     </body>
 
