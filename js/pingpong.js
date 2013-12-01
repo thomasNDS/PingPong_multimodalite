@@ -1,11 +1,12 @@
 var socket = null;
-var observations = {}
+var observations = {};
 var valType = 'acceleration';
 var dexterity = "right";
 var dateLastAction = new Date();
 var mode = "observer";
 var connected = false;
 var pause = false;
+
 /**
  * Constructeur de l'app client
  */
@@ -14,10 +15,6 @@ function init() {
     $('#options').hide();
     console.log("init");
     socket = io.connect();
-    socket.on('update', function(data) {
-
-
-    });
     //Ajout des listener de messages
     socket.on('disappear', function(data) {
         var obj = observations[data.id];
@@ -105,7 +102,6 @@ function init() {
     });
     $('#goGame').on('click', function() {
         beginGame();
-        console.log("go le jeu go !");
     });
     $('#joueur2').on('click', function() {
         console.log("click j2");
@@ -137,9 +133,12 @@ function init() {
     $('#pause').hide();
     $('#fieldZone').hide();
 }
-
+/**
+ * set pause for all observers
+ * @param {type} state
+ */
 function pauses(state) {
-    if (state != pause)
+    if (state !== pause)
         socket.emit('pause', {});
 }
 /**
@@ -148,7 +147,7 @@ function pauses(state) {
  * @returns {undefined}
  */
 function ping(puissance, typeOfHit) {
-    if (mode != 'observer') {
+    if (mode !== 'observer') {
         socket.emit('ping', {power: puissance, type: typeOfHit, mode: mode});
     }
 }
@@ -158,12 +157,12 @@ function ping(puissance, typeOfHit) {
  * @param {type} e: event
  */
 function deviceMotionHandler(e) {
-    if (connected == true) {
+    if (connected === true) {
         var actualDate = new Date();
         var diffSinceLastAction = actualDate.getTime() - dateLastAction.getTime();
         if (e.accelerationIncludingGravity.z > 15 && diffSinceLastAction > 1000) {
             var coup;
-            if (dexterity == "left") {
+            if (dexterity === "left") {
                 coup = "simpleDroit";
                 if (e.rotationRate.beta > 0) {
                     coup = "simpleRevert";
@@ -180,9 +179,9 @@ function deviceMotionHandler(e) {
     }
 }
 
-///**
-// * Affiche le menu observateur
-// */
+/**
+ * Affiche le menu observateur
+ */
 function subscribe2Server() {
     socket.emit('mode', {mode: mode});
 }
