@@ -10,6 +10,7 @@ var pause = false;
  * Constructeur de l'app client
  */
 function init() {
+    document.getElementById("paf").play();
     window.document.title = "e-Pong"
     $('#options').hide();
     console.log("init");
@@ -38,6 +39,7 @@ function init() {
     });
 
     socket.on('playerPing', function(data) {
+        document.getElementById("paf").play();
         $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode + "<br>" + $("#info").html());
 
         if (data.data.mode === "team1") {
