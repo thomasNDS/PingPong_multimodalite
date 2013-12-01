@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Hammer.js</title>
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <style>
+
+            h1 {
+                margin: 30px;
+                text-align: center;
+            }
+
+            .drag {
+                position: absolute;
+                width: 100px;
+                height: 100px;
+            }
+
+            .drag1 { 
+                background-image: url("raquette1.png");
+            }
+            .drag2 { 
+                background: #4986e7; 
+                right: 0;
+                bottom: 0;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <h1>Drag the balls!</h1>
+
+        <!--        <div class="drag drag1"></div>
+                <div class="drag drag2"></div>-->
+
+
+        <div id="zoomwrapper1">
+            <div id="zoom1" class="drag drag1" >
+                <div id="rect1" class="polaroid">
+                    <!--<img src="raquette1.png" alt="" width="200" height="200" style="position : absolute; z-index: 1;" />-->
+                </div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg" >
+            </svg>
+        </div>
+        <div id="zoomwrapper2">
+            <div id="zoom2" class="drag drag2" >
+                <div id="rect1" class="polaroid">
+                    <!--<img src="raquette1.png" alt="" width="200" height="200" style="position : absolute; z-index: 1;" />-->
+                </div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg2" style="right: 0; bottom: 0">
+            </svg>
+        </div>
+
+        <!--    <head>
+                <title>TODO supply a title</title>
+                <meta charset="UTF-8">
+                <meta name=”viewport” content=”width=device-width, initial-scale=1.0, user-scalable=no”>
+                <script src=”jquery-1.7.2.min.js”></script>
+                <script src=”hammer.js”></script>
+                <script src=”jquery.hammer.js”></script>
+                <script src=”myLogic.js”></script>
+                <link href=’http://fonts.googleapis.com/css?family=Bree+Serif’ rel=’stylesheet’ type=’text/css’>
+                <link href=’style.css’ rel=’stylesheet’ type=’text/css’>
+            </head>
+            <body>
+                <div id="zoomwrapper1">
+                    <div id="zoom1" class="zoomProps" >
+                        <div id="rect1" class="polaroid">
+                            <img src="raquette1.png" alt="" width="200" height="200" style="position : absolute; z-index: 1;" />
+                        </div>
+                    </div>
+                </div>-->
+
+    </body>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="assets/js/modernizr.js"></script>
+
+    <script src="dist/jquery.hammer.js"></script>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="dist/hammer.min.js"></script>
+    <script src="dist/jquery.hammer.min.js"></script>
+    <script src="plugins/hammer.fakemultitouch.js"></script>
+    <script src="plugins/hammer.showtouches.js"></script>
+    <script type="text/javascript" src="tactile.js"></script>
+
+
+</html>

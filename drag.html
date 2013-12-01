@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hammer.js</title>
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <style>
+
+            h1 {
+                margin: 30px;
+                text-align: center;
+            }
+
+            .drag {
+                position: absolute;
+                width: 100px;
+                height: 100px;
+            }
+
+            .drag1 { 
+                background-image: url("raquette1.png");
+            }
+            .drag2 { 
+                background: #4986e7; 
+                right: 0;
+                bottom: 0;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <h1>Drag the balls!</h1>
+
+        <div class="drag drag1">
+            <!--<img src="raquette1.png" alt="" width="100" height="100" style="position : absolute; z-index: 1;" />-->
+        </div>
+        <div class="drag drag2"></div>
+
+
+        <!-- jQuery is just for the demo! Hammer.js works without jQuery :-) -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+        <script src="assets/js/modernizr.js"></script>
+
+        <script src="dist/jquery.hammer.js"></script>
+
+        <script>
+
+            var posX = 0, posY = 0,
+                    lastPosX = 0, lastPosY = 0,
+                    bufferX = 0, bufferY = 0,
+                    scale = 1, last_scale,
+                    rotation = 1, last_rotation, dragReady = 0;
+            $(".drag")
+                    .hammer({drag_max_touches: 0})
+                    .on("touch drag dragend transform", function(ev) {
+                                        var touches = ev.gesture.touches;
+                        
+                                        ev.gesture.preventDefault();
+                        
+                                        for(var t=0,len=touches.length; t<len; t++) {
+                                            var target = $(touches[t].target);
+                                            console.log(target);
+                                            target.css({
+                                                zIndex: 1337,
+                                                left: touches[t].pageX-50,
+                                                top: touches[t].pageY-50
+                                            });
+                                            
+                                        }
+
+//                        console.log("coucou");
+//                        switch (ev.type) {
+//                            
+//                            case 'touch':
+//                                last_scale = scale;
+//                                last_rotation = rotation;
+//
+//                                break;
+//
+//                            case 'drag':
+//                                posX = ev.gesture.deltaX;
+//                                posY = ev.gesture.deltaY;
+//                                //pouic(lastPosX,lastPosY,posX,posY);
+//                                lastPosX = posX;
+//                                lastPosY = posY;
+//                                break;
+//
+//                            case 'transform':
+//                                rotation = last_rotation + ev.gesture.rotation;
+//                                scale = Math.max(1, Math.min(last_scale * ev.gesture.scale, 10));
+//                                break;
+//
+//                            case 'dragend':
+//                                posX = 0;
+//                                posY = 0;
+//                                lastPosX = 0;
+//                                lastPosY = 0;
+//                                //svg = document.getElementById("svg");
+//                                //while(svg.firstChild){
+//                                //    svg.removeChild(svg.firstChild);
+//                                //}
+//                                break;
+//                        }
+                    });
+
+
+        </script>
+        <script src="assets/js/ga.js"></script>
+    </body>
+</html>
