@@ -49,7 +49,6 @@ function drawBall() {
     if (!isRuning) {
         return;
     }
-
     // Change the ball location.
     ballX += ballDX * coefPuissance;
     ballY += ballDY * coefPuissance;
@@ -136,7 +135,7 @@ function endGame(team) {
 }
 
 function resetGame() {
-     
+
     ball.setAttribute("cx", ballX);
     ball.setAttribute("cy", ballY);
     coefPuissance = 1;
@@ -148,14 +147,14 @@ function resetGame() {
         ballY = fieldHeight / 2 - 5;
         ballDX = fieldWidth / 150;
         ballDY = fieldHeight / 150;
-        playerPlaying = 0;
+        playerPlaying = 1;
     } else {
         console.log("team2 a le service");
         ballX = fieldWidth;
         ballY = fieldHeight / 2 - 5;
         ballDX = -fieldWidth / 150;
         ballDY = -fieldHeight / 150;
-        playerPlaying = 1;
+        playerPlaying = 0;
     }
     console.log("========================service=" + teamWhoHaveService + "=====================")
 }
