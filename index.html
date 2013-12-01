@@ -10,7 +10,6 @@
     </head>
 
     <body style="text-align: center;">
-        
         <div style="position: fixed;  position: fixed;
              padding:10px;
              z-index:200;
@@ -18,17 +17,24 @@
              left: 0;
              right: 0;">
 
-            <h1>Ping Pong !</h1>
+            <h1 id="titleEpong">epong !</h1>
 
             <div id="ChooseMode" >
-                <button  id="terrain" value="terrain" onclick="beginGame()">Terrain</button>
+                <button  id="terrain" value="terrain">Terrain</button>
                 <button id="joueur1" value="joueur1">Equipe 1</button>
-                <button id="joueur2" value="joueur2">Equipe 2</button>
+                <button id="joueur2" value="joueur2">Equipe 2</button><br>
             </div>
+            <div id="waitingPlayers">
+                <h2>En Attente de joueurs ... </h2>
+            </div>
+            <div id="startGame">
+                <button id="goGame" value="go">Lancer Le jeu</button>
+            </div>
+
 
             <button id="pause" value="Pause">Pause</button>
 
-            <div id="pause_menu" style="text-align: center" class="pause_menu_open">
+            <div id="pause_menu" class="pause_menu_open">
                 <div id="options">
                     <h1>Pause</h1>
                     <button id="gaucher" value="Gaucher">Gaucher</button>
@@ -41,24 +47,29 @@
 
         <div id="commands"> </div>
         <div id="orientation"> </div>
+        <div id="fieldZone">
+            <div id="score">
+                <div id="scoreTeam1">0</div>
+                <div id="scoreTeam2">0</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" id="field" width="95%" height="95%">
+            <!-- Create the board. -->
+            <rect x="1" y="1" width="100%" height="100%" fill="green" id="bpard" />
 
-        <svg xmlns="http://www.w3.org/2000/svg" id="field" width="95%" height="95%">
-        <!-- Create the board. -->
-        <rect x="1" y="1" width="100%" height="100%" fill="green" id="bpard" />
+            <!-- Zones pour taper la balle -->
+            <rect id="leftHitableZone"/>
+            <rect id="rightHitableZone"/>
 
-        <!-- Zones pour taper la balle -->
-        <rect id="leftHitableZone"/>
-        <rect id="rightHitableZone"/>
+            <!-- Lignes du terrian -->
+            <line x1="50%" y1="0" x2="50%" y2="100%" style="stroke:rgb(255,255,255);stroke-width:3"/>
+            <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:rgb(255,255,255);stroke-width:1"/>
 
-        <!-- Lignes du terrian -->
-        <line x1="50%" y1="0" x2="50%" y2="100%" style="stroke:rgb(255,255,255);stroke-width:3"/>
-        <line x1="0" y1="50%" x2="100%" y2="50%" style="stroke:rgb(255,255,255);stroke-width:1"/>
-
-        <!-- Balle -->
-        <circle id="ball" />
-        <!-- Create the paddle. -->
-        <!--<rect x="1" y="1" width="150" height="10" fill="navy" id="paddle" />-->
-        </svg>
+            <!-- Balle -->
+            <circle id="ball" />
+            <!-- Create the paddle. -->
+            <!--<rect x="1" y="1" width="150" height="10" fill="navy" id="paddle" />-->
+            </svg>
+        </div>
 
         <script src="fieldManager.js"></script>
 

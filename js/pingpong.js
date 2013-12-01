@@ -42,8 +42,17 @@ function init() {
             delete observations[data.id];
         }
     });
+    $('#startGame').hide();
+    socket.on('beginGame', function() {
+        console.log('start beginGame');
+        $('#waitingPlayers').hide();
+        $('#startGame').show();
+        $('#titleEpong').hide();
+    });
+
     socket.on('playerPing', function(data) {
-        $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode);
+        $("#info").html($("#info").html() + "<br>Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode);
+
         if (data.data.mode === "team1") {
             hitTheBall(data.data.power, data.data.type, 1);
         } else if (data.data.mode === "team2") {
@@ -79,6 +88,7 @@ function init() {
         $('#joueur2').removeClass('active');
         $('#options').hide();
         subscribe2Server();
+        mode = 'observer';
     });
 
     $('#gaucher').on('click', function() {
@@ -102,6 +112,10 @@ function init() {
         subscribe2Server();
         pauses(true);
     });
+    $('#goGame').on('click', function() {
+        beginGame();
+        console.log("go le jeu go !")
+    });
     $('#joueur2').on('click', function() {
         console.log("click j2");
         mode = "team2";
@@ -112,6 +126,7 @@ function init() {
         $('#options').show();
         subscribe2Server();
         pauses(true);
+
     });
 
     // Events
@@ -126,6 +141,7 @@ function init() {
         $('#joueur2').hide();
         $('#register').hide();
     }
+    $('#pause').hide();
 }
 
 function pauses(state) {
@@ -138,7 +154,8 @@ function pauses(state) {
  * @returns {undefined}
  */
 function ping(puissance, typeOfHit) {
-    socket.emit('ping', {power: puissance, type: typeOfHit, mode: mode});
+    if (mode != 'observer')
+        socket.emit('ping', {power: puissance, type: typeOfHit, mode: mode});
 }
 
 /**
