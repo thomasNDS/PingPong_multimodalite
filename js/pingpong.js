@@ -15,24 +15,8 @@ function init() {
     console.log("init");
     socket = io.connect();
     socket.on('update', function(data) {
-        var actualDate = new Date();
-        var diffSinceLastAction = actualDate.getTime() - dateLastAction.getTime();
-        if (data.data.accelerationIncludingGravity.z > 15 && diffSinceLastAction > 1000) {
-            var coup;
-            if (dexterity == "left") {
-                coup = "simpleDroit";
-                if (data.data.rotationRate.beta > 0) {
-                    coup = "simpleRevert";
-                }
-            } else {
-                coup = "simpleRevert";
-                if (data.data.rotationRate.beta > 0) {
-                    coup = "simpleDroit";
-                }
-            }
-            dateLastAction = actualDate;
-            ping(data.data.accelerationIncludingGravity.z, coup);
-        }
+
+
     });
     //Ajout des listener de messages
     socket.on('disappear', function(data) {
@@ -110,7 +94,7 @@ function init() {
         $('#terrain').removeClass('active');
         $('#options').show();
         subscribe2Server();
-        pauses(true);
+       // pauses(true);
     });
     $('#goGame').on('click', function() {
         beginGame();
@@ -125,7 +109,7 @@ function init() {
         $('#terrain').removeClass('active');
         $('#options').show();
         subscribe2Server();
-        pauses(true);
+      //  pauses(true);
 
     });
 
@@ -164,9 +148,27 @@ function ping(puissance, typeOfHit) {
  */
 function deviceMotionHandler(e) {
     if (connected == true) {
-        socket.emit('update', {acceleration: e.acceleration,
-            accelerationIncludingGravity: e.accelerationIncludingGravity,
-            rotationRate: e.rotationRate});
+//        socket.emit('update', {acceleration: e.acceleration,
+//            accelerationIncludingGravity: e.accelerationIncludingGravity,
+//            rotationRate: e.rotationRate});
+        var actualDate = new Date();
+        var diffSinceLastAction = actualDate.getTime() - dateLastAction.getTime();
+        if (e.accelerationIncludingGravity.z > 15 && diffSinceLastAction > 1000) {
+            var coup;
+            if (dexterity == "left") {
+                coup = "simpleDroit";
+                if (e.rotationRate.beta > 0) {
+                    coup = "simpleRevert";
+                }
+            } else {
+                coup = "simpleRevert";
+                if (e.rotationRate.beta > 0) {
+                    coup = "simpleDroit";
+                }
+            }
+            dateLastAction = actualDate;
+            ping(e.accelerationIncludingGravity.z, coup);
+        }
     }
 }
 

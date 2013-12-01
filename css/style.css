@@ -68,3 +68,13 @@ button:hover {
 #pause_menu {
     text-align: center; 
 }
+
+#score{
+    display: inline;
+    z-index: 4;
+    text-orientation: rotate-left;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}

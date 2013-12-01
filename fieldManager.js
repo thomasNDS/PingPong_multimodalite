@@ -32,6 +32,8 @@ var lastPlayerPlaying;
 var team1point = 0;
 var team2point = 0;
 var pointForGame = 5;
+var waitService = false;
+var teamWhoHaveService = 0;
 
 function drawGameSVG() {
     // Add keyboard listener.
@@ -58,8 +60,11 @@ function drawBall() {
     if (ballX + ballDX > fieldWidth - largeurAcceptableHit || ballX + ballDX < largeurAcceptableHit) {
         isHitable = true;
         console.log("TAPE!!");
-        if (ballX + ballDX > fieldWidth + ballRayon || ballX + ballDX < -ballRayon) {
-            endGame();
+        if (ballX + ballDX > fieldWidth + ballRayon) {
+            endGame(1);
+        }
+        if (ballX + ballDX < -ballRayon) {
+            endGame(2);
         }
     }
     else {
@@ -79,17 +84,31 @@ function beginGame() {
     $('#ChooseMode').hide();
     isRuning = true;
     resetGame();
-    if (gameLoop) { //si y'a déjà un setInterval en cours, on le supprime avant de le recréér
-        clearInterval(gameLoop);
-        gameLoop = null;
-    }
-    gameLoop = setInterval(drawBall, 16);
+    waitService = true;
 }
 
-function endGame() {
+function service(team) {
+    if (team === teamWhoHaveService) {
+        if (gameLoop) { //si y'a déjà un setInterval en cours, on le supprime avant de le recréér
+            clearInterval(gameLoop);
+            gameLoop = null;
+        }
+        gameLoop = setInterval(drawBall, 16);
+        //On attend plus de service suivant
+        waitService = false;
+        //on change l'équpe qui a le service
+        if (teamWhoHaveService === 0)
+            teamWhoHaveService = 1;
+        else {
+            teamWhoHaveService = 0;
+        }
+    }
+}
+
+function endGame(team) {
     resetGame();
     // Si victoire avec 2 point d'ecart
-    if (Math.abs(team1point - team2point) > 2 && ((team1point > pointForGame) || (team1point > pointForGame))) {
+    if (Math.abs(team1point - team2point) > 2 && ((team1point > pointForGame) || (team2point > pointForGame))) {
         $('#pause').hide();
         isRuning = false;
         window.clearInterval(gameLoop);
@@ -98,6 +117,12 @@ function endGame() {
         // On réinitialise les scores
         team1point = 0;
         team2point = 0;
+    } else {
+        if (team === 1) {
+            team1point++;
+        } else {
+            team2point++;
+        }
     }
     $('#scoreTeam1').html(team1point);
     $('#scoreTeam2').html(team2point);
@@ -131,19 +156,23 @@ function hitTestGauche() {
 }
 
 function hitTheBall(puissance, type, teamToPlay) {
-    if (isHitable && playerPlaying === teamToPlay) {
-        console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
-        ballDX = -ballDX;
-        ballDY = ballDYBase * calculNextY();
-        coefPuissance = 1;
-        playerPlaying = (playerPlaying + 1) % 2;
-        switch (type) {
-            case 'simpleDroit':
-                break;
-            case 'simpleRevert':
-                break;
-            default:
-                break;
+    if (waitService) {
+        service (teamToPlay);
+    } else {
+        if (isHitable && playerPlaying === teamToPlay) {
+            console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
+            ballDX = -ballDX;
+            ballDY = ballDYBase * calculNextY();
+            coefPuissance = 1;
+            playerPlaying = (playerPlaying + 1) % 2;
+            switch (type) {
+                case 'simpleDroit':
+                    break;
+                case 'simpleRevert':
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
