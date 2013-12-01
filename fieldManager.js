@@ -29,6 +29,9 @@ var coefPuissance = 1;
 var gameLoop = null;
 var playerPlaying = 1; // 0 joueur gauche 1 droite
 var lastPlayerPlaying;
+var team1point = 0;
+var team2point = 0;
+var pointForGame = 5;
 
 function drawGameSVG() {
     // Add keyboard listener.
@@ -71,6 +74,9 @@ function drawBall() {
 }
 
 function beginGame() {
+    $('#pause').show();
+    $('#titleEpong').hide();
+    $('#ChooseMode').hide();
     isRuning = true;
     resetGame();
     if (gameLoop) { //si y'a déjà un setInterval en cours, on le supprime avant de le recréér
@@ -81,16 +87,20 @@ function beginGame() {
 }
 
 function endGame() {
-    isRuning = false;
-    window.clearInterval(gameLoop);
-    gameLoop = null;
-
-    var reset = confirm("Recommencer?");
-    if (reset) {
-        resetGame();
-        beginGame();
+    resetGame();
+    // Si victoire avec 2 point d'ecart
+    if (Math.abs(team1point - team2point) > 2 && ((team1point > pointForGame) || (team1point > pointForGame))) {
+        $('#pause').hide();
+        isRuning = false;
+        window.clearInterval(gameLoop);
+        gameLoop = null;
+        $('#titleEpong').show();
+        // On réinitialise les scores
+        team1point = 0;
+        team2point = 0;
     }
-
+    $('#scoreTeam1').html(team1point);
+    $('#scoreTeam2').html(team2point);
 }
 
 function resetGame() {
@@ -104,11 +114,11 @@ function resetGame() {
     playerPlaying = 1;
 }
 
-function pauseGame(){
+function pauseGame() {
     isRuning = false;
 }
 
-function unpauseGame(){
+function unpauseGame() {
     isRuning = true;
 }
 
@@ -168,8 +178,6 @@ function calculNextY() {
         //On multiplie par la direction de la balle pour avoir le bon sens.
         coef = coef * getDirectionBall();
     }
-
-//    console.log("coef = " + coef);
     return coef;
 }
 
