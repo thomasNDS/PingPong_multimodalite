@@ -5,7 +5,7 @@ var field = document.getElementById('field');
 var fieldStyle = window.getComputedStyle(field);
 var fieldHeight = parseInt(fieldStyle.height);
 var fieldWidth = parseInt(fieldStyle.width);
-var largeurAcceptableHit = 250;
+var largeurAcceptableHit = 25; //0; En pourcentage
 
 //Balle
 var ballRayon = 15;
@@ -240,7 +240,7 @@ function whatKey(evt) {
 function writeLeftHitableZone() {
     document.getElementById("leftHitableZone").setAttribute("x", "1");
     document.getElementById("leftHitableZone").setAttribute("y", "1");
-    document.getElementById("leftHitableZone").setAttribute("width", largeurAcceptableHit);
+    document.getElementById("leftHitableZone").setAttribute("width", largeurAcceptableHit + "%");
     document.getElementById("leftHitableZone").setAttribute("height", "100%");
     document.getElementById("leftHitableZone").setAttribute("fill", "grey");
 }
@@ -249,10 +249,11 @@ function writeLeftHitableZone() {
  *  Fonction pour donner les informations sur la zone droite à partir de laquelle on peut taper
  */
 function writeRightHitableZone() {
-    var xZone = document.getElementById("field").offsetWidth - largeurAcceptableHit;
+    var largAccep = (document.getElementById("field").offsetWidth * largeurAcceptableHit) / 100;
+    var xZone = document.getElementById("field").offsetWidth - largAccep;
     document.getElementById("rightHitableZone").setAttribute("x", xZone);
     document.getElementById("rightHitableZone").setAttribute("y", "1");
-    document.getElementById("rightHitableZone").setAttribute("width", largeurAcceptableHit);
+    document.getElementById("rightHitableZone").setAttribute("width", largeurAcceptableHit + "%");
     document.getElementById("rightHitableZone").setAttribute("height", "100%");
     document.getElementById("rightHitableZone").setAttribute("fill", "grey");
 }
