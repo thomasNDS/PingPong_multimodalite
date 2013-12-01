@@ -149,6 +149,7 @@ function resetGame() {
         ballY = fieldHeight / 2 - 5;
         ballDX = fieldWidth / 150;
         ballDY = fieldHeight / 150;
+        ballDYBase = ballDY;
         playerPlaying = 1;
     } else {
         console.log("team2 a le service");
@@ -156,6 +157,7 @@ function resetGame() {
         ballY = fieldHeight / 2 - 5;
         ballDX = -fieldWidth / 150;
         ballDY = -fieldHeight / 150;
+        ballDYBase = ballDY;
         playerPlaying = 0;
     }
     console.log("========================service=" + teamWhoHaveService + "=====================")
