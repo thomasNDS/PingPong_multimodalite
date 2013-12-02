@@ -3,16 +3,16 @@ Technologies:
  - Serveur = Node.js, Express, socket.io
 ======================================================================
 
-#1 Fusion des projet morgan et thomas
-#2 Intégration reconnaisance vocale Elisa
-#3 Mode pause coté client
+#1 Fusion des projet morgan et thomas OK
+#2 Intégration reconnaisance vocale Elisa OK
+#3 Mode pause coté client OK
 
-#4 Creer une action service
-#5 Empecher le début avant qu'il y ait au moins deux joueurs
+#4 Creer une action service OK
+#5 Empecher le début avant qu'il y ait au moins deux joueurs OK
 
-#6 Créer des effets sonores 
-#7 Integrer les effets sonores
-#8 Rendre le site plus responsible design (adapter l'interface mobile)
+#6 Créer des effets sonores ok
+#7 Integrer les effets sonores ok
+#8 Rendre le site plus responsible design (adapter l'interface mobile) ok
 #9 Un coup de CSS pour rendre plus sympas l'interface
 
 #10 Corriger bug lors de l'ajout de terrain pendant mode pause.
