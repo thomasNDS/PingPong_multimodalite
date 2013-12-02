@@ -1,11 +1,12 @@
 var socket = null;
-var observations = {}
+var observations = {};
 var valType = 'acceleration';
 var dexterity = "right";
 var dateLastAction = new Date();
 var mode = "observer";
 var connected = false;
 var pause = false;
+
 /**
  * Constructeur de l'app client
  */
@@ -14,26 +15,6 @@ function init() {
     $('#options').hide();
     console.log("init");
     socket = io.connect();
-    socket.on('update', function(data) {
-        var actualDate = new Date();
-        var diffSinceLastAction = actualDate.getTime() - dateLastAction.getTime();
-        if (data.data.accelerationIncludingGravity.z > 15 && diffSinceLastAction > 1000) {
-            var coup;
-            if (dexterity == "left") {
-                coup = "simpleDroit";
-                if (data.data.rotationRate.beta > 0) {
-                    coup = "simpleRevert";
-                }
-            } else {
-                coup = "simpleRevert";
-                if (data.data.rotationRate.beta > 0) {
-                    coup = "simpleDroit";
-                }
-            }
-            dateLastAction = actualDate;
-            ping(data.data.accelerationIncludingGravity.z, coup);
-        }
-    });
     //Ajout des listener de messages
     socket.on('disappear', function(data) {
         var obj = observations[data.id];
@@ -42,8 +23,25 @@ function init() {
             delete observations[data.id];
         }
     });
+    $('#startGame').hide();
+    socket.on('beginGame', function() {
+        console.log('start beginGame');
+        $('#waitingPlayers').hide();
+        if (mode === 'observer')
+            $('#startGame').show();
+        else
+            $('#startGame').hide();
+        $('#titleEpong').hide();
+    });
+
     socket.on('playerPing', function(data) {
-        $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode);
+        $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode + "<br>" + $("#info").html());
+
+        if (data.data.mode === "team1") {
+            hitTheBall(data.data.power, data.data.type, 0);
+        } else if (data.data.mode === "team2") {
+            hitTheBall(data.data.power, data.data.type, 1);
+        }
     });
 
     socket.on('pause', function(data) {
@@ -51,10 +49,12 @@ function init() {
             console.log("pause on");
             pause = true;
             $('.pause_menu_open').click();
+            pauseGame();
         } else {
             pause = false;
             console.log("pause off");
             $('.pause_menu_close').click();
+            unpauseGame();
         }
     });
 
@@ -72,6 +72,9 @@ function init() {
         $('#joueur2').removeClass('active');
         $('#options').hide();
         subscribe2Server();
+        mode = 'observer';
+        $('#fieldZone').show();
+        $('#pause').hide();
     });
 
     $('#gaucher').on('click', function() {
@@ -93,7 +96,12 @@ function init() {
         $('#terrain').removeClass('active');
         $('#options').show();
         subscribe2Server();
-        pauses(true);
+        $('#fieldZone').hide();
+        $('#pause').show();
+        // pauses(true);
+    });
+    $('#goGame').on('click', function() {
+        beginGame();
     });
     $('#joueur2').on('click', function() {
         console.log("click j2");
@@ -104,7 +112,10 @@ function init() {
         $('#terrain').removeClass('active');
         $('#options').show();
         subscribe2Server();
-        pauses(true);
+        $('#fieldZone').hide();
+        //  pauses(true);
+        $('#pause').show();
+
     });
 
     // Events
@@ -119,10 +130,15 @@ function init() {
         $('#joueur2').hide();
         $('#register').hide();
     }
+    $('#pause').hide();
+    $('#fieldZone').hide();
 }
-
+/**
+ * set pause for all observers
+ * @param {type} state
+ */
 function pauses(state) {
-    if (state != pause)
+    if (state !== pause)
         socket.emit('pause', {});
 }
 /**
@@ -131,7 +147,9 @@ function pauses(state) {
  * @returns {undefined}
  */
 function ping(puissance, typeOfHit) {
-    socket.emit('ping', {power: puissance, type: typeOfHit, mode: mode});
+    if (mode !== 'observer') {
+        socket.emit('ping', {power: puissance, type: typeOfHit, mode: mode});
+    }
 }
 
 /**
@@ -139,16 +157,31 @@ function ping(puissance, typeOfHit) {
  * @param {type} e: event
  */
 function deviceMotionHandler(e) {
-    if (connected == true) {
-        socket.emit('update', {acceleration: e.acceleration,
-            accelerationIncludingGravity: e.accelerationIncludingGravity,
-            rotationRate: e.rotationRate});
+    if (connected === true) {
+        var actualDate = new Date();
+        var diffSinceLastAction = actualDate.getTime() - dateLastAction.getTime();
+        if (e.accelerationIncludingGravity.z > 15 && diffSinceLastAction > 1000) {
+            var coup;
+            if (dexterity === "left") {
+                coup = "simpleDroit";
+                if (e.rotationRate.beta > 0) {
+                    coup = "simpleRevert";
+                }
+            } else {
+                coup = "simpleRevert";
+                if (e.rotationRate.beta > 0) {
+                    coup = "simpleDroit";
+                }
+            }
+            dateLastAction = actualDate;
+            ping(e.accelerationIncludingGravity.z, coup);
+        }
     }
 }
 
-///**
-// * Affiche le menu observateur
-// */
+/**
+ * Affiche le menu observateur
+ */
 function subscribe2Server() {
     socket.emit('mode', {mode: mode});
 }

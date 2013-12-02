@@ -1,4 +1,6 @@
-var pause = false;
+var pause = false;  //state pause
+var start = false;  // if game start
+var teamArrive = 0;
 var Server = {
     fs: require('fs'),
     express: require('express'), // Appel au framework express
@@ -39,6 +41,16 @@ var Server = {
             socket.on('disconnect', function() {
                 Server.disconnect(socket);
             });
+            socket.on('start', function() {
+                for (var i in Server.observers) {
+                    Server.observers[i].socket.emit('start', {});
+                }
+            });
+            socket.on('end', function() {
+                for (var i in Server.observers) {
+                    Server.observers[i].socket.emit('start', {});
+                }
+            });
         });
     },
     /**
@@ -77,12 +89,14 @@ var Server = {
                 var obs = {socket: socket};
                 this.teamTwo[socket.id] = obs;
                 this.observers[socket.id] = obs;
+                this.updateState(2)
                 break;
             case 'team1':
                 console.log('Team1');
                 var obs = {socket: socket};
                 this.teamOne[socket.id] = obs;
                 this.observers[socket.id] = obs;
+                this.updateState(1);
                 break;
             case 'observer':
                 console.log('connection observer');
@@ -107,6 +121,28 @@ var Server = {
             this.observers[i].socket.emit('update', {id: socket.id, data: data});
         }
     },
+    /**
+     * update the state
+     * 
+     * @param {type} team
+     */
+    updateState: function(team) {
+        if (teamArrive === 0) {
+            teamArrive = team;
+        }
+        else if (teamArrive !== team) {
+            start = true;
+            for (var i in this.observers) {
+                this.observers[i].socket.emit('beginGame', {});
+            }
+        }
+    },
+    /**
+     * a player hit the ball
+     * 
+     * @param {type} socket
+     * @param {type} data
+     */
     ping: function(socket, data) {
         // Send it back to all observers
         //If in zone
