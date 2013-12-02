@@ -47,10 +47,10 @@ var hammertime4 = Hammer(document.getElementById('zoomwrapper4'), {
 });
 
 var posX = 0, posY = 0,
-        lastPosX = 0, lastPosY = 0,
-        bufferX = 0, bufferY = 0,
-        scale = 1, last_scale,
-        rotation = 1, last_rotation, dragReady = 0;
+    lastPosX = 0, lastPosY = 0,
+    bufferX = 0, bufferY = 0,
+    scale = 1, last_scale,
+    rotation = 1, last_rotation, dragReady = 0;
 
 hammertime.on('touch drag dragend transform', function(ev) {
     elemRect = document.getElementById('zoom1');
@@ -90,7 +90,6 @@ function manageMultitouch(ev) {
             posY = touches[0].pageY;
             if(lastPosX!==0 && lastPosY!==0)
                 pouic(posX,posY,lastPosX,lastPosY);
-
             lastPosX = posX;
             lastPosY = posY;
             break;
@@ -132,5 +131,4 @@ function pouic(x1,y1,x2,y2)
     newElement.style.stroke = "#FF0000"; //Set stroke colour
     newElement.style.strokeWidth = "2px"; //Set stroke width
     svg.appendChild(newElement);
-    //('<line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />');
 }

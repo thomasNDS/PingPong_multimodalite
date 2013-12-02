@@ -217,7 +217,7 @@ function hitTheBall(puissance, type, teamToPlay) {
     if (waitService) {
         service(teamToPlay);
     } else {
-        if (isHitable && (playerPlaying === teamToPlay) && isItToMyTeamToPlay(teamToPlay)) {
+        if (isHitable && (playerPlaying === teamToPlay) && isItToMyTeamToPlay(teamToPlay) /*&& isCorrectHand(type)*/) {
             console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
             ballDX = -ballDX;
             ballDY = ballDYBase * calculNextY();
@@ -311,18 +311,22 @@ function checkHandToHit(mainHand) {
     var hand = null;
     if (ballX < fieldWidth / 2) {
         if (ballY <= fieldHeight / 2) {
-            hand = "revert";
+            hand = "simpleRevert";
         } else {
-            hand = "right";
+            hand = "simpleDroit";
         }
     } else {
         if (ballY <= fieldHeight / 2) {
-            hand = "right";
+            hand = "simpleDroit";
         } else {
-            hand = "revert";
+            hand = "simpleRevert";
         }
     }
     return hand;
+}
+
+function isCorrectHand(handFromSocket){
+    return (checkHandToHit() === handFromSocket);
 }
 
 /**
@@ -333,13 +337,13 @@ function whatKey(evt) {
     switch (evt.keyCode) {
         // Left arrow.
         case 37:
-            if (checkHandToHit() === "revert") {
+            if (checkHandToHit() === "simpleRevert") {
                 hitTestGauche();
             }
             break;
             // Right arrow.
         case 39:
-            if (checkHandToHit() === "right") {
+            if (checkHandToHit() === "simpleDroit") {
                 hitTestDroit();
             }
             break;
