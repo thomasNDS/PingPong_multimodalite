@@ -350,7 +350,10 @@ function writeLeftHitableZone() {
     document.getElementById("leftHitableZone").setAttribute("y", "1");
     document.getElementById("leftHitableZone").setAttribute("width", largeurAcceptableHit + "%");
     document.getElementById("leftHitableZone").setAttribute("height", "100%");
-    document.getElementById("leftHitableZone").setAttribute("fill", "grey");
+    document.getElementById("leftHitableZone").setAttribute("fill", "green");
+    document.getElementById("leftHitableZone").setAttribute("stroke", "grey");
+    document.getElementById("leftHitableZone").setAttribute("stroke-width", "5");
+    document.getElementById("leftHitableZone").setAttribute("stroke-dasharray", "5,5");
 }
 
 /**
@@ -363,7 +366,10 @@ function writeRightHitableZone() {
     document.getElementById("rightHitableZone").setAttribute("y", "1");
     document.getElementById("rightHitableZone").setAttribute("width", largeurAcceptableHit + "%");
     document.getElementById("rightHitableZone").setAttribute("height", "100%");
-    document.getElementById("rightHitableZone").setAttribute("fill", "grey");
+    document.getElementById("rightHitableZone").setAttribute("fill", "green");
+    document.getElementById("rightHitableZone").setAttribute("stroke", "grey");
+    document.getElementById("rightHitableZone").setAttribute("stroke-width", "5");
+    document.getElementById("rightHitableZone").setAttribute("stroke-dasharray", "5,5");
 }
 
 /**
