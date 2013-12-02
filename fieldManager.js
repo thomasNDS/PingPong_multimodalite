@@ -98,6 +98,8 @@ function beginGame() {
 function service(team) {
     console.log("team " + team + " who have service=" + teamWhoHaveService);
     if (team === teamWhoHaveService) {
+        $('#addTactileP1').hide();
+        $('#addTactileP2').hide();
         document.getElementById("paf").play();
         if (gameLoop) { //si y'a déjà un setInterval en cours, on le supprime avant de le recréér
             clearInterval(gameLoop);
@@ -126,11 +128,13 @@ function endGame(team) {
     window.clearInterval(gameLoop);
     gameLoop = null;
     // Si victoire avec 2 point d'ecart
-    if (Math.abs(team1point - team2point) > 2 && ((team1point > pointForGame) || (team2point > pointForGame))) {
+    if (Math.abs(team1point - team2point) > 1 && ((team1point > pointForGame) || (team2point > pointForGame))) {
         $('#pause').hide();
         isRuning = false;
         $('#titleEpong').show();
         $('#startGame').show();
+        $('#addTactileP1').show();
+        $('#addTactileP2').show();
         // On réinitialise les scores
         team1point = 0;
         team2point = 0;

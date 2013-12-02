@@ -35,7 +35,7 @@ function init() {
     });
 
     socket.on('playerPing', function(data) {
-        $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode + "<br>" + $("#info").html());
+      //  $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode + "<br>" + $("#info").html());
 
         if (data.data.mode === "team1") {
             hitTheBall(data.data.power, data.data.type, 0);
@@ -65,8 +65,10 @@ function init() {
     });
 
     $('addTactileP1').on('click', function() {
-        console.log("pause");
-        socket.emit('pause', {});
+        
+    });
+    $('addTactileP2').on('click', function() {
+        
     });
 
     $('#terrain').on('click', function() {
@@ -103,7 +105,6 @@ function init() {
         subscribe2Server();
         $('#fieldZone').hide();
         $('#pause').show();
-        // pauses(true);
     });
     $('#goGame').on('click', function() {
         beginGame();
@@ -118,7 +119,6 @@ function init() {
         $('#options').show();
         subscribe2Server();
         $('#fieldZone').hide();
-        //  pauses(true);
         $('#pause').show();
 
     });

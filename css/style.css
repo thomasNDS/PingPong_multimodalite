@@ -102,7 +102,7 @@ button:hover {
     z-index: 4;
     text-orientation: rotate-left;
     position: fixed;
-    left: 10%;
+    left: 5%;
     text-align: left;  
     font-weight:bold;
     font-family: sans-serif;
@@ -112,7 +112,7 @@ button:hover {
     z-index: 4;
     text-orientation: rotate-left;
     position: fixed;
-    right: 10%;
+    right: 5%;
     text-align: right;  
     font-weight:bold;
     font-family: sans-serif;
