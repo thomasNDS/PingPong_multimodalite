@@ -64,6 +64,11 @@ function init() {
         socket.emit('pause', {});
     });
 
+    $('addTactileP1').on('click', function() {
+        console.log("pause");
+        socket.emit('pause', {});
+    });
+
     $('#terrain').on('click', function() {
         console.log("click terrain");
         //mode = "observer";

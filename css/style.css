@@ -97,7 +97,26 @@ button:hover {
     font-weight:bold;
     font-family: sans-serif;
 }
-
+#addTactileP1{
+    top: 50%;
+    z-index: 4;
+    text-orientation: rotate-left;
+    position: fixed;
+    left: 10%;
+    text-align: left;  
+    font-weight:bold;
+    font-family: sans-serif;
+}
+#addTactileP2{
+    top: 50%;
+    z-index: 4;
+    text-orientation: rotate-left;
+    position: fixed;
+    right: 10%;
+    text-align: right;  
+    font-weight:bold;
+    font-family: sans-serif;
+}
 #lblTeam1{
     display: inline;
     position: absolute;
