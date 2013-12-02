@@ -6,7 +6,8 @@ var dateLastAction = new Date();
 var mode = "observer";
 var connected = false;
 var pause = false;
-
+var joueurP1tactile = false;
+var joueurP2tactile = false;
 /**
  * Constructeur de l'app client
  */
@@ -35,7 +36,7 @@ function init() {
     });
 
     socket.on('playerPing', function(data) {
-      //  $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode + "<br>" + $("#info").html());
+        //  $("#info").html("Type: " + data.data.type + " puissance: " + data.data.power + " team: " + data.data.mode + "<br>" + $("#info").html());
 
         if (data.data.mode === "team1") {
             hitTheBall(data.data.power, data.data.type, 0);
@@ -64,11 +65,26 @@ function init() {
         socket.emit('pause', {});
     });
 
-    $('addTactileP1').on('click', function() {
-        
+    $('#addTactileP1').on('click', function() {
+        if (joueurP1tactile) {
+            joueurP1tactile = false;
+            $('#addTactileP1').removeClass('active');
+        }
+        else {
+            joueurP1tactile = true;
+            $('#addTactileP1').addClass('active');
+        }
     });
-    $('addTactileP2').on('click', function() {
-        
+    
+    $('#addTactileP2').on('click', function() {
+        if (joueurP2tactile) {
+            joueurP2tactile = false;
+            $('#addTactileP2').removeClass('active');
+        }
+        else {
+            joueurP2tactile = true;
+            $('#addTactileP2').addClass('active');
+        }
     });
 
     $('#terrain').on('click', function() {

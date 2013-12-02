@@ -99,20 +99,22 @@ button:hover {
 }
 #addTactileP1{
     top: 50%;
-    z-index: 4;
+    z-index: 50;
     text-orientation: rotate-left;
     position: fixed;
     left: 5%;
     text-align: left;  
     font-weight:bold;
     font-family: sans-serif;
+    font-size: medium;
 }
 #addTactileP2{
     top: 50%;
-    z-index: 4;
+    z-index: 50;
     text-orientation: rotate-left;
     position: fixed;
     right: 5%;
+    font-size: medium;
     text-align: right;  
     font-weight:bold;
     font-family: sans-serif;
