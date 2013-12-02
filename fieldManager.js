@@ -74,6 +74,7 @@ function drawBall() {
 //        endGame();
     }
 }
+
 /**
  * Start the game
  * @returns {undefined}
@@ -88,6 +89,7 @@ function beginGame() {
     waitService = true;
     $('#infoDetails').html('<h1> Service équipe ' + ((teamWhoHaveService + 1)) + ' </h1>');
 }
+
 /**
  * Serve for the game
  * @param {type} team
@@ -113,6 +115,7 @@ function service(team) {
         }
     }
 }
+
 /**
  * End the game
  * @param {type} team
@@ -146,7 +149,7 @@ function endGame(team) {
 }
 
 /**
- * reset info for a new game
+ * Reset info for a new game
  * @returns {undefined}
  */
 function resetGame() {
