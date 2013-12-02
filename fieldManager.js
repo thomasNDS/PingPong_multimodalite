@@ -172,7 +172,7 @@ function resetGame() {
     if (teamWhoHaveService === 0) {
         console.log("team1 a le service");
         ballX = 0;
-        ballY = fieldHeight / 2 - 5;
+        ballY = fieldHeight / 2 + 5;
         ballDX = fieldWidth / 150;
         ballDY = fieldHeight / 150;
         ballDYBase = ballDY;
@@ -264,7 +264,7 @@ function calculNextY() {
 
     var coef = 0;
     //Selon le coup réalisé, calcul différent
-    if (checkHandToHit() === "right") {
+    if (checkHandToHit() === "simpleDroit") {
         //Coup droit
         coef = 1 - 2 * posXinZoneHit;
     } else {
