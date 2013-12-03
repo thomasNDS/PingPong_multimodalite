@@ -5,6 +5,8 @@
  */
 
 var position = "";
+var firstPosX = null;
+var firstPosY = null;
 
 if (!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
     Hammer.plugins.showTouches();
@@ -84,6 +86,11 @@ function manageMultitouch(ev) {
             var touches = ev.gesture.touches;
             posX = touches[0].pageX;
             posY = touches[0].pageY;
+            if (firstPosX === null && firstPosY === null)
+            {
+                firstPosX = posX;
+                firstPosY = posY;
+            }
             if (lastPosX !== 0 && lastPosY !== 0)
                 pouic(posX, posY, lastPosX, lastPosY);
             lastPosX = posX;
@@ -92,18 +99,25 @@ function manageMultitouch(ev) {
 
         case 'dragend':
             console.log(position);
-            if (position === "hautdroite")
-                tactilePing(15, "simpleDroit", "team2");
-            if (position === "basdroite")
-                tactilePing(15, "simpleDroit", "team2");
-            if (position === "basgauche")
-                tactilePing(15, "simpleDroit", "team1");
-            if (position === "hautgauche")
-                tactilePing(15, "simpleDroit", "team1");
+            var norme = Math.sqrt((lastPosX - firstPosX) * (lastPosX - firstPosX) + (lastPosY - firstPosY) * (lastPosY - firstPosY));
+            var superPuissance = norme / (fieldWidth / 2) * 60;
+            if (superPuissance > 10 ) {
+                if (position === "hautdroite" && joueurP2tactile)
+                    tactilePing(superPuissance, "simpleDroit", "team2");
+                if (position === "basdroite" && joueurP2tactile)
+                    tactilePing(superPuissance, "simpleRevert", "team2");
+                if (position === "basgauche" && joueurP1tactile)
+                    tactilePing(superPuissance, "simpleDroit", "team1");
+                if (position === "hautgauche" && joueurP1tactile)
+                    tactilePing(superPuissance, "simpleRevert", "team1");
+            }
+            console.log(superPuissance);
             posX = 0;
             posY = 0;
             lastPosX = 0;
             lastPosY = 0;
+            firstPosX = null;
+            firstPosY = null;
             svg = document.getElementById("svg");
             while (svg.firstChild) {
                 svg.removeChild(svg.firstChild);
