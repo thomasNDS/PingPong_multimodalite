@@ -7,6 +7,9 @@
 var position = "";
 var childs = new Array();
 
+var firstPosX = null;
+var firstPosY = null;
+
 if (!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
     Hammer.plugins.showTouches();
 }
@@ -48,34 +51,30 @@ var hammertime4 = Hammer(document.getElementById('zoom4'), {
 });
 
 var posX = 0, posY = 0,
-    lastPosX = 0, lastPosY = 0,
-    bufferX = 0, bufferY = 0,
-    scale = 1, last_scale,
-    rotation = 1, last_rotation, dragReady = 0;
+        lastPosX = 0, lastPosY = 0,
+        bufferX = 0, bufferY = 0,
+        scale = 1, last_scale,
+        rotation = 1, last_rotation, dragReady = 0;
 
 hammertime.on('touch drag dragend transform', function(ev) {
-
     orientation = true;
     manageMultitouch(ev);
     position = "hautgauche";
 });
 
 hammertime2.on('touch drag dragend transform', function(ev) {
-
     orientation = false;
     manageMultitouch(ev);
     position = "basdroite";
 });
 
 hammertime3.on('touch drag dragend transform', function(ev) {
-
     orientation = true;
     manageMultitouch(ev);
     position = "basgauche";
 });
 
 hammertime4.on('touch drag dragend transform', function(ev) {
-
     orientation = false;
     manageMultitouch(ev);
     position = "hautdroite";
@@ -91,31 +90,48 @@ function manageMultitouch(ev) {
             posY = touches[0].pageY;
             if(lastPosX!==0 && lastPosY!==0)
                 draw(posX,posY,lastPosX,lastPosY);
+            if (firstPosX === null && firstPosY === null)
+            {
+                firstPosX = posX;
+                firstPosY = posY;
+            }
             lastPosX = posX;
             lastPosY = posY;
             break;
 
         case 'dragend':
             console.log(position);
-            posX = 0;
-            posY = 0;
-            lastPosX = 0;
-            lastPosY = 0;
+            var norme = Math.sqrt((lastPosX - firstPosX) * (lastPosX - firstPosX) + (lastPosY - firstPosY) * (lastPosY - firstPosY));
+            var superPuissance = norme / (fieldWidth / 2) * 60;
+            if (superPuissance > 10 ) {
+                if (position === "hautdroite" && joueurP2tactile)
+                    tactilePing(superPuissance, "simpleDroit", "team2");
+                if (position === "basdroite" && joueurP2tactile)
+                    tactilePing(superPuissance, "simpleRevert", "team2");
+                if (position === "basgauche" && joueurP1tactile)
+                    tactilePing(superPuissance, "simpleDroit", "team1");
+                if (position === "hautgauche" && joueurP1tactile)
+                    tactilePing(superPuissance, "simpleRevert", "team1");
+            }
+            console.log(superPuissance);
+            
+
             svg = document.getElementById("field");
             var k=0;
             var lenght = childs.length;
             while(k<lenght){
-                console.log(childs[k]);
                 svg.removeChild(childs[k]);
-                //lenght--;
                 k++;
             }
+            
             childs = new Array();
+            posX = 0;
+            posY = 0;
+            lastPosX = 0;
+            lastPosY = 0;
+            firstPosX = null;
+            firstPosY = null;
                 
-//            while(svg.lastChild){
-//                console.log(svg.getAttribute('toto'));
-//                svg.removeChild(svg.lastChild);
-//            }
             break;
     }
 }
@@ -125,12 +141,12 @@ function draw(x1,y1,x2,y2)
     var svg = document.getElementById("field");
 
     var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'line'); //Create a path in SVG's namespace
-    
+
     newElement.setAttribute("x1", x1); //Set path's data
     newElement.setAttribute("y1", y1); //Set path's data
     newElement.setAttribute("x2", x2); //Set path's data
     newElement.setAttribute("y2", y2); //Set path's data
-      
+
     newElement.style.stroke = "#FF0000"; //Set stroke colour
     newElement.style.strokeWidth = "2px"; //Set stroke width
     var child = svg.appendChild(newElement);

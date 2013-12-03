@@ -181,10 +181,10 @@ function ping(puissance, typeOfHit) {
  * @param {type} typeOfHit
  * @param {type} teamPlaying
  */
-function tacilePing(puissance, typeOfHit, teamPlaying) {
-    if (mode !== 'observer') {
+function tactilePing(puissance, typeOfHit, teamPlaying) {
+   
         socket.emit('ping', {power: puissance, type: typeOfHit, mode: teamPlaying});
-    }
+        console.log ("tact ping");
 }
 
 /**

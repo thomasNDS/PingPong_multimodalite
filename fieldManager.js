@@ -230,17 +230,13 @@ function hitTheBall(puissance, type, teamToPlay) {
             console.log("joueur qui doit jouer : " + playerPlaying + " team reçu : " + teamToPlay);
             ballDX = -ballDX;
             ballDY = ballDYBase * calculNextY();
+            if (isCorrectHand(type)){
+                puissance +=10;
+            }
+            
             coefPuissance = 0.85 + puissance / 100;
             playerPlaying = (playerPlaying + 1) % 2;
             document.getElementById("paf").play();
-            switch (type) {
-                case 'simpleDroit':
-                    break;
-                case 'simpleRevert':
-                    break;
-                default:
-                    break;
-            }
         }
     }
 }
