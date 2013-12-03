@@ -5,6 +5,7 @@
  */
 
 var position = "";
+var childs = new Array();
 
 if (!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
     Hammer.plugins.showTouches();
@@ -89,7 +90,7 @@ function manageMultitouch(ev) {
             posX = touches[0].pageX;
             posY = touches[0].pageY;
             if(lastPosX!==0 && lastPosY!==0)
-                pouic(posX,posY,lastPosX,lastPosY);
+                draw(posX,posY,lastPosX,lastPosY);
             lastPosX = posX;
             lastPosY = posY;
             break;
@@ -100,20 +101,28 @@ function manageMultitouch(ev) {
             posY = 0;
             lastPosX = 0;
             lastPosY = 0;
-            svg = document.getElementById("svg");
-            while(svg.firstChild){
-                svg.removeChild(svg.firstChild);
+            svg = document.getElementById("field");
+            var k=0;
+            var lenght = childs.length;
+            while(k<lenght){
+                console.log(childs[k]);
+                svg.removeChild(childs[k]);
+                //lenght--;
+                k++;
             }
+            childs = new Array();
+                
+//            while(svg.lastChild){
+//                console.log(svg.getAttribute('toto'));
+//                svg.removeChild(svg.lastChild);
+//            }
             break;
     }
-
- 
-
 }
 
-function pouic(x1,y1,x2,y2)
+function draw(x1,y1,x2,y2)
 {
-    var svg = document.getElementById("svg");
+    var svg = document.getElementById("field");
 
     var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'line'); //Create a path in SVG's namespace
     
@@ -124,5 +133,7 @@ function pouic(x1,y1,x2,y2)
       
     newElement.style.stroke = "#FF0000"; //Set stroke colour
     newElement.style.strokeWidth = "2px"; //Set stroke width
-    svg.appendChild(newElement);
+    var child = svg.appendChild(newElement);
+    childs.push(child);
+    
 }
