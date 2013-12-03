@@ -86,7 +86,7 @@ function manageMultitouch(ev) {
     switch (ev.type) {
         case 'drag':
             var touches = ev.gesture.touches;
-            posX = touches[0].pageX;
+            posX = touches[0].pageX-(document.body.clientWidth*0.025);
             posY = touches[0].pageY;
             if(lastPosX!==0 && lastPosY!==0)
                 draw(posX,posY,lastPosX,lastPosY);
