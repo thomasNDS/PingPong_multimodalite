@@ -14,7 +14,7 @@
             .drag {
                 position: absolute;
                 height: 50%;
-                width: 50%;
+                width: 20%;
             }
 
             .drag1 {
@@ -37,28 +37,25 @@
     </head>
 
     <body style="text-align: center;">
-        
 
-        
-        <div style="position: fixed;  position: fixed;
+        <div style="position: fixed; 
              padding:10px;
-             z-index:20;
              margin: 5% auto;
              left: 0;
              right: 0;">
 
             <h1 id="titleEpong">e-pong !</h1>
             <img src="assets/img/header_logo.png" height="10%" width="10%"/>
-            <div id="ChooseMode" >
-                <button  id="terrain" value="terrain">Terrain</button>
-                <button id="joueur1" value="joueur1">Equipe 1</button>
-                <button id="joueur2" value="joueur2">Equipe 2</button><br>
+            <div id="ChooseMode">
+                <button  id="terrain" value="terrain" style="z-index : 100;">Terrain</button>
+                <button id="joueur1" value="joueur1" style="z-index : 100;">Equipe 1</button>
+                <button id="joueur2" value="joueur2" style="z-index : 100;">Equipe 2</button><br>
             </div>
-            <div id="infoDetails"> </div>
-            <div id="waitingPlayers">
+            <div id="infoDetails" > </div>
+            <div id="waitingPlayers" >
                 <h2>En Attente de joueurs ... </h2>
             </div>
-            <div id="startGame">
+            <div id="startGame" >
                 <button id="goGame" value="go">Lancer Le jeu</button>
             </div>
 
@@ -72,11 +69,11 @@
                 </div>
                 <button id="return"  value="return" class="pause_menu_close">Retour au jeu</button>
             </div>
-            <div id="info"> </div>
+            <div id="info" > </div>
         </div>
 
-        <div id="commands"> </div>
-        <div id="fieldZone">
+        <div id="commands" > </div>
+        <div id="fieldZone" >
             <button id="addTactileP1" value="addTactileP1">Ajouter joueur tactile</button>
             <button id="addTactileP2" value="addTactileP2" >Ajouter joueur tactile</button>
             <div id="score">
@@ -101,34 +98,28 @@
             <circle id="ball" />
             </svg>
         </div>
-        
-                <div id="zoomwrapper1">
-            <div id="zoom1" class="drag drag1" >
-                <div id="rect1" class="polaroid">
-                </div>
-            </div>
-        </div>
-        <div id="zoomwrapper2">
-            <div id="zoom2" class="drag drag2" >
-                <div id="rect2" class="polaroid">
-                </div>
-            </div>
-        </div>
-        <div id="zoomwrapper3">
-            <div id="zoom3" class="drag drag3" >
-                <div id="rect3" class="polaroid">                    
-                </div>
-            </div>
-        </div>
-        <div id="zoomwrapper4">
-            <div id="zoom4" class="drag drag4" >
-                <div id="rect4" class="polaroid">                 
-                </div>
-            </div>
-        </div>
 
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg" >
-        </svg>
+        <div id="tactile" style="position: fixed;" >
+            <div id="zoom1" class="drag drag1" style="position: fixed; " >
+
+            </div>
+
+            <div id="zoom2" class="drag drag2" style="position: fixed; " >
+
+            </div>
+
+            <div id="zoom3" class="drag drag3" style="position: fixed; " >
+
+            </div>
+
+            <div id="zoom4" class="drag drag4" style="position: fixed; " >
+
+            </div>
+
+
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg" style="z-index : 30">
+            </svg>
+        </div>
 
         <script src="fieldManager.js"></script>
 
@@ -153,12 +144,11 @@
             init();
         </script>
     </body>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
     <script src="assets/js/modernizr.js"></script>
 
     <script src="dist/jquery.hammer.js"></script>
 
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="dist/hammer.min.js"></script>
     <script src="dist/jquery.hammer.min.js"></script>
     <script src="plugins/hammer.fakemultitouch.js"></script>

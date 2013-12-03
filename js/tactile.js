@@ -14,7 +14,7 @@ if (!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
     Hammer.plugins.fakeMultitouch();
 }
 
-var hammertime = Hammer(document.getElementById('zoomwrapper1'), {
+var hammertime = Hammer(document.getElementById('zoom1'), {
     transform_always_block: true,
     transform_min_scale: 1,
     drag_block_horizontal: true,
@@ -22,7 +22,7 @@ var hammertime = Hammer(document.getElementById('zoomwrapper1'), {
     drag_min_distance: 0
 });
 
-var hammertime2 = Hammer(document.getElementById('zoomwrapper2'), {
+var hammertime2 = Hammer(document.getElementById('zoom2'), {
     transform_always_block: true,
     transform_min_scale: 1,
     drag_block_horizontal: true,
@@ -30,7 +30,7 @@ var hammertime2 = Hammer(document.getElementById('zoomwrapper2'), {
     drag_min_distance: 0
 });
 
-var hammertime3 = Hammer(document.getElementById('zoomwrapper3'), {
+var hammertime3 = Hammer(document.getElementById('zoom3'), {
     transform_always_block: true,
     transform_min_scale: 1,
     drag_block_horizontal: true,
@@ -38,7 +38,7 @@ var hammertime3 = Hammer(document.getElementById('zoomwrapper3'), {
     drag_min_distance: 0
 });
 
-var hammertime4 = Hammer(document.getElementById('zoomwrapper4'), {
+var hammertime4 = Hammer(document.getElementById('zoom4'), {
     transform_always_block: true,
     transform_min_scale: 1,
     drag_block_horizontal: true,
@@ -53,28 +53,28 @@ var posX = 0, posY = 0,
     rotation = 1, last_rotation, dragReady = 0;
 
 hammertime.on('touch drag dragend transform', function(ev) {
-    elemRect = document.getElementById('zoom1');
+
     orientation = true;
     manageMultitouch(ev);
     position = "hautgauche";
 });
 
 hammertime2.on('touch drag dragend transform', function(ev) {
-    elemRect = document.getElementById('zoom2');
+
     orientation = false;
     manageMultitouch(ev);
     position = "basdroite";
 });
 
 hammertime3.on('touch drag dragend transform', function(ev) {
-    elemRect = document.getElementById('zoom3');
+
     orientation = true;
     manageMultitouch(ev);
     position = "basgauche";
 });
 
 hammertime4.on('touch drag dragend transform', function(ev) {
-    elemRect = document.getElementById('zoom4');
+
     orientation = false;
     manageMultitouch(ev);
     position = "hautdroite";
@@ -107,13 +107,7 @@ function manageMultitouch(ev) {
             break;
     }
 
-    var transform = "translate3d(" + posX + "px," + posY + "px, 0) ";
-
-    elemRect.style.transform = transform;
-    elemRect.style.oTransform = transform;
-    elemRect.style.msTransform = transform;
-    elemRect.style.mozTransform = transform;
-    elemRect.style.webkitTransform = transform;
+ 
 
 }
 
