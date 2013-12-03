@@ -25,7 +25,7 @@ var playerPlaying; // 0 joueur gauche 1 droite
 var lastPlayerPlaying;
 var team1point = 0;
 var team2point = 0;
-var pointForGame = 5;
+var pointForGame = 4;
 var waitService = false;
 var teamWhoHaveService = 0;
 
@@ -128,7 +128,14 @@ function endGame(team) {
     window.clearInterval(gameLoop);
     gameLoop = null;
     // Si victoire avec 2 point d'ecart
-    if (Math.abs(team1point - team2point) > 1 && ((team1point > pointForGame) || (team2point > pointForGame))) {
+    if (Math.abs(team1point - team2point) > 1 && ((team1point >= pointForGame) || (team2point >= pointForGame))) {
+        if (team1point > team2point){
+            // team1 win
+            $('#infoDetails').html('<H1> Victoire équipe 1 </h1>');
+        }else{
+            // team2 win
+            $('#infoDetails').html('<H1> Victoire équipe 2 </h1>');
+        }
         $('#pause').hide();
         isRuning = false;
         $('#titleEpong').show();
@@ -140,6 +147,7 @@ function endGame(team) {
         team2point = 0;
         document.getElementById("tada").play();
     } else {
+        $('#infoDetails').html('<h1> Service équipe ' + ((teamWhoHaveService + 1)) + ' </h1>');
         if (team === 1) {
             team1point++;
         } else {
@@ -147,7 +155,6 @@ function endGame(team) {
         }
     }
     resetGame();
-    $('#infoDetails').html('<h1> Service équipe ' + ((teamWhoHaveService + 1)) + ' </h1>');
     $('#scoreTeam1').html(team1point);
     $('#scoreTeam2').html(team2point);
 }
@@ -165,7 +172,7 @@ function resetGame() {
     if (teamWhoHaveService === 0) {
         console.log("team1 a le service");
         ballX = 0;
-        ballY = fieldHeight / 2 - 5;
+        ballY = fieldHeight / 2 + 5;
         ballDX = fieldWidth / 150;
         ballDY = fieldHeight / 150;
         ballDYBase = ballDY;
@@ -197,11 +204,13 @@ function unpauseGame() {
 }
 
 function hitTestDroit() {
-    hitTheBall(15, "simpleDroit", playerPlaying);
+    hitTheBall(15, "simpleRevert", 1);
+    hitTheBall(15, "simpleRevert", 0);
 }
 
 function hitTestGauche() {
-    hitTheBall(15, "simpleRevert", playerPlaying);
+    hitTheBall(15, "simpleRevert", 1);
+    hitTheBall(15, "simpleRevert", 0);
 }
 
 /**
@@ -255,7 +264,7 @@ function calculNextY() {
 
     var coef = 0;
     //Selon le coup réalisé, calcul différent
-    if (checkHandToHit() === "right") {
+    if (checkHandToHit() === "simpleDroit") {
         //Coup droit
         coef = 1 - 2 * posXinZoneHit;
     } else {

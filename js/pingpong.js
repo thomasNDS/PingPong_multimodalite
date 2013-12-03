@@ -73,9 +73,10 @@ function init() {
         else {
             joueurP1tactile = true;
             $('#addTactileP1').addClass('active');
+            subscribe2Server("team1");
         }
     });
-    
+
     $('#addTactileP2').on('click', function() {
         if (joueurP2tactile) {
             joueurP2tactile = false;
@@ -84,6 +85,7 @@ function init() {
         else {
             joueurP2tactile = true;
             $('#addTactileP2').addClass('active');
+            subscribe2Server("team2");
         }
     });
 
@@ -94,7 +96,7 @@ function init() {
         $('#joueur1').removeClass('active');
         $('#joueur2').removeClass('active');
         $('#options').hide();
-        subscribe2Server();
+        subscribe2Server(mode);
         mode = 'observer';
         $('#fieldZone').show();
         $('#pause').hide();
@@ -118,7 +120,7 @@ function init() {
         $('#joueur2').removeClass('active');
         $('#terrain').removeClass('active');
         $('#options').show();
-        subscribe2Server();
+        subscribe2Server(mode);
         $('#fieldZone').hide();
         $('#pause').show();
     });
@@ -133,7 +135,7 @@ function init() {
         $('#joueur1').removeClass('active');
         $('#terrain').removeClass('active');
         $('#options').show();
-        subscribe2Server();
+        subscribe2Server(mode);
         $('#fieldZone').hide();
         $('#pause').show();
 
@@ -174,6 +176,18 @@ function ping(puissance, typeOfHit) {
 }
 
 /**
+ * When a player ping by tactile
+ * @param {type} puissance
+ * @param {type} typeOfHit
+ * @param {type} teamPlaying
+ */
+function tacilePing(puissance, typeOfHit, teamPlaying) {
+    if (mode !== 'observer') {
+        socket.emit('ping', {power: puissance, type: typeOfHit, mode: teamPlaying});
+    }
+}
+
+/**
  * Send dataperiodically to the server
  * @param {type} e: event
  */
@@ -203,6 +217,6 @@ function deviceMotionHandler(e) {
 /**
  * Affiche le menu observateur
  */
-function subscribe2Server() {
-    socket.emit('mode', {mode: mode});
+function subscribe2Server(mymode) {
+    socket.emit('mode', {mode: mymode});
 }
