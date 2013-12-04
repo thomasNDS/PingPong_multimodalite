@@ -19,4 +19,4 @@ How to run:
 nodejs Serveur.js
 ```
 
-go to ```http://http://localhost:4242/```
+go to ```http://localhost:4242/```
